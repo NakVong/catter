@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 import MainPage from './pages/MainPage';
 import GuidePage from './pages/GuidePage';
+import GuidePageQ1 from './pages/GuidePageQ1';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
 import { Button } from "@/components/ui/button"
@@ -16,7 +17,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/main" element={ <MainPage/> }/>
-          <Route path="/guide" element={ <GuidePage/> }/>
+                  <Route path="/guide" element={<GuidePage />} />
+                  <Route path="/guide/q1" element={<GuidePageQ1 />} />
           <Route path="/chat" element={ <ChatPage/> }/>
           <Route path="/profile" element={ <ProfilePage/> }/>
         </Routes>
