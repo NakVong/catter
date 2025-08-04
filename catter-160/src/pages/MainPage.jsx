@@ -6,7 +6,7 @@ const MainPage = () => {
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}></h1>
-      <CatCarousel/>
+      <CatSwiper/>
       <NavBar/>
     </div>
   );
