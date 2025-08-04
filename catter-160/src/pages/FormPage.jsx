@@ -1,10 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Pencil, Mars, House, BookText, MessageSquare, User } from "lucide-react";
-import { Link } from 'react-router-dom';
+import { Pencil, Mars } from "lucide-react";
 import cat from '../assets/cat.jpg';
 
-const ProfilePage = () => {
+const FormPage = () => {
     return (
         <div className="min-h-screen bg-white flex flex-col items-center justify-between pb-24">
             {/* Profile Section */}
@@ -34,27 +33,10 @@ const ProfilePage = () => {
             </Card>
 
             {/* Bottom Nav */}
-            <div className="fixed bottom-0 left-0 w-full bg-white border-t flex justify-around items-center h-16">
-                <Link to="/main" className="text-gray-400 flex flex-col items-center text-xs">
-                    <House />
-                    Home
-                </Link>
-                <Link to="/guide" className="text-gray-400 flex flex-col items-center text-xs">
-                    <BookText />
-                    Guides
-                </Link>
-                <Link to="/chat" className="text-gray-400 relative flex flex-col items-center text-xs">
-                    <MessageSquare />
-                    Chat
-                    <span className="absolute top-0 right-2 bg-red-500 text-white text-xs rounded-full px-1">4</span>
-                </Link>
-                <Link to="/profile" className="text-purple-500 flex flex-col items-center text-xs">
-                    <User />
-                    Profile
-                </Link>
-            </div>
+            <NavBar />
+            
         </div>
     );
 };
 
-export default ProfilePage
+export default FormPage;
