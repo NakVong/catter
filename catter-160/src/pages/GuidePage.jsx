@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 
 import { Button } from "@/components/ui/button"
+import NavBar from "@/components/NavBar"
 import {
     Carousel,
     CarouselContent,
@@ -85,6 +86,7 @@ const GuidePage = () => {
 
 
             </div>
+            <NavBar />
         </div>
     );
 };
