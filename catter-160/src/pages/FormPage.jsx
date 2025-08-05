@@ -1,42 +1,42 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Pencil, Mars } from "lucide-react";
-import cat from '../assets/cat.jpg';
+import NavBar from "@/components/NavBar";
+import catTutorial from '../assets/cat-tutorial.jpg';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const FormPage = () => {
     return (
         <div className="min-h-screen bg-white flex flex-col items-center justify-between pb-24">
             {/* Profile Section */}
-            <Card className="relative mt-12 w-[90%] max-w-md bg-pink-50 text-center p-6 rounded-3xl shadow-md">
-                <button className="absolute top-2 right-2 bg-rose-200 rounded-full p-1 shadow-md">
-                    <Pencil size={16} className="text-white" />
-                </button>
-
-                <h1 className="text-3xl font-bold mb-4">Profile</h1>
-
-                <div className="relative inline-block">
-                    
-                    <Avatar className="w-28 h-28 mx-auto shadow-md">
-                        <AvatarImage src={ cat } alt="Cat" />
-                    </Avatar>
-                </div>
-
-                <div className="mt-4">
-                    <p className="text-xl font-semibold">
-                        Order <span className="text-sm font-normal ml-1">2 months</span>
-                    </p>
-                    <p className="text-xl font-bold mt-1">1.7kg</p>
-                    <div className="mt-2 inline-flex items-center justify-center w-8 h-8 border border-blue-600 rounded-md mx-auto">
-                        <Mars size={16} className="text-blue-600" />
-                    </div>
-                </div>
-            </Card>
+            <Carousel className="relative mt-12 w-[90%] max-w-md bg-pink-50 text-center p-6 rounded-3xl shadow-md">
+                <CarouselContent>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <CarouselItem key={index}>
+                            <div className="p-1">
+                                <Card className="bg-pink-50 shadow-none border-none">
+                                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                                        {index === 0 ? (
+                                            <div>
+                                                <img src={catTutorial} className="rounded-3xl pb-6" alt="Tutorial" />
+                                                <p className="text-xl text-[#5F5B5B] pb-3">Find your new friends</p>
+                                                <p className="text-l text-[#ADA8A8]">Make your life more colorful</p>
+                                            </div>
+                                        ) : (
+                                            <div className="text-gray-400 italic">Coming soon...</div>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </CarouselItem>
+                    ))}
+                </CarouselContent>
+                <CarouselPrevious />
+                <CarouselNext />
+            </Carousel>
 
             {/* Bottom Nav */}
             <NavBar />
-            
         </div>
     );
 };
 
-export default FormPage;
+export default FormPage
