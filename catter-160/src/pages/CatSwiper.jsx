@@ -1,11 +1,11 @@
 import TinderCard from 'react-tinder-card';
 import styles from './CatSwiper.module.css';
-
+import tabbyImg from '../assets/tabby.jpg';
 const cats = [
   {
     name: 'Samantha',
     location: 'California (2.5km)',
-    image: 'https://placekitten.com/300/200',
+    image: tabbyImg,
     age: '1.5 years',
     breed: 'Tabby',
     weight: '2.3kg',
@@ -13,7 +13,7 @@ const cats = [
     sex: 'Male',
     spayed: 'Spayed',
   },
-  // You can add more cat objects here
+  // Add more cat objects as needed
 ];
 
 const CatSwiper = () => {
@@ -39,6 +39,9 @@ const CatSwiper = () => {
     </div>
   );
 };
+
+export default CatSwiper;
+
 
 export default CatSwiper;
 
