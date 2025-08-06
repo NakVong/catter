@@ -3,31 +3,20 @@ import styles from './CatSwiper.module.css';
 
 const cats = [
   {
-    name: "Samantha",
-    location: "California (2.5km)",
-    image: tabbyImg,
-    age: "1.5 years",
-    breed: "Tabby",
-    weight: "2.3kg",
-    color: "Grey",
-    sex: "Male",
-    spayed: "Spayed",
-  },
-  {
-    name: "Tigri",
-    location: "Boston (1.2km)",
-    image: tigriImg,
-    age: "One year old",
-    breed: "British Short Hair",
-    weight: "2.7kg",
-    color: "White",
-    sex: "Female",
-    spayed: "Spayed",
+    name: 'Samantha',
+    location: 'California (2.5km)',
+    image: 'https://placekitten.com/300/200',
+    age: '1.5 years',
+    breed: 'Tabby',
+    weight: '2.3kg',
+    color: 'Grey',
+    sex: 'Male',
+    spayed: 'Spayed',
   },
   // You can add more cat objects here
 ];
 
-export function CatCarousel() {
+const CatSwiper = () => {
   return (
     <div className={styles.cardContainer}>
       {cats.map((cat, index) => (
@@ -49,6 +38,7 @@ export function CatCarousel() {
       ))}
     </div>
   );
+};
 };
 
 export default CatSwiper;

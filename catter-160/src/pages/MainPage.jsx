@@ -1,15 +1,22 @@
-import NavBar from "@/components/NavBar"
-import CatCarousel from './CatSwiper'; 
-
+import CatSwiper from './CatSwiper'; 
 
 const MainPage = () => {
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Main Page</h1>
+      {/* Logo in top-left */}
+      <div className="p-4">
+        <img 
+          src={logo} 
+          alt="Catter Logo" 
+          className="h-12 w-auto object-contain"
+        />
+      </div>
+
       <CatSwiper/>
     </div>
   );
 };
 
 export default MainPage;
+
 
