@@ -38,7 +38,8 @@ const CatSwiper = () => {
 
   return (
     <div className={styles.cardWrapper}>
-      {cats.map((cat, index) => {
+      {[...cats].reverse().map((cat, i) => {
+        const index = cats.length - 1 - i; // Real index in original array
         const isTop = index === currentIndex;
         const isNext = index === currentIndex - 1;
 
@@ -83,6 +84,7 @@ const CatSwiper = () => {
 };
 
 export default CatSwiper;
+
 
 
 

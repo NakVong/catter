@@ -6,12 +6,14 @@
   margin-top: 40px;
 }
 
-/* Each swipeable card */
+/* Position each TinderCard */
 .swipe {
   position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
-/* Card base style */
+/* Main card styles */
 .catCard {
   background-color: #fff;
   border-radius: 20px;
@@ -33,7 +35,6 @@
   height: 240px;
 }
 
-/* Cat image */
 .catImage {
   width: 100%;
   height: 100%;
@@ -41,7 +42,7 @@
   border-radius: 16px;
 }
 
-/* Heart icon in circle */
+/* Heart icon */
 .heartIcon {
   position: absolute;
   top: 12px;
@@ -64,7 +65,7 @@
   transform: scale(1.05);
 }
 
-/* Name and location section */
+/* Cat info section */
 .catInfo {
   margin-top: 0.5rem;
   text-align: left;
@@ -81,7 +82,6 @@
   font-size: 1.2rem;
 }
 
-/* Female gender icon */
 .femaleIcon {
   font-size: 1.2rem;
   color: #e75480;
@@ -114,6 +114,26 @@
   margin-top: 0.6rem;
   font-style: italic;
 }
+
+/* Peek effect */
+.topCard {
+  z-index: 3;
+  transform: translateX(0);
+}
+
+.nextCard {
+  z-index: 2;
+  transform: translateX(20px) scale(0.95);
+  transition: transform 0.3s ease;
+}
+
+.hiddenCard {
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(0);
+}
+
 
 
 
