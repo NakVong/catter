@@ -38,7 +38,7 @@ const cats = [
 
 export function CatCarousel() {
   return (
-    <Carousel className="w-full max-w-[340px]">
+    <Carousel className="min-h-screen flex flex-wrap flex-col items-center justify-center gap-8">
       <CarouselContent>
         {cats.map((cat, index) => (
           <CarouselItem key={index}>
@@ -78,7 +78,7 @@ export function CatCarousel() {
     </Carousel>
   );
 }
-
+export default CatCarousel;
 
 
 
