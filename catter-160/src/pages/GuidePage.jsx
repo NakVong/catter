@@ -53,7 +53,7 @@ const FormSchema = z.object({
 import { Label } from "@/components/ui/label"
 import { Mail, ArrowRight, Scissors, UtensilsCrossed, Droplets, ToyBrick, ShowerHead } from "lucide-react"
 
-const buttonGroupStyle = "flex flex-wrap flex-col items-center justify-center gap-8";
+const buttonGroupStyle = "flex min-h-screen flex-wrap flex-col items-center justify-center gap-8";
 const buttonStyle =
     "relative w-64 h-8 bg-gray-100 text-gray-900 rounded flex justify-center items-center";
 
@@ -94,7 +94,7 @@ const GuidePage = () => {
                         <ArrowRight className="w-4 h-4 absolute right-4" />
                     </div>
                 </Link>
-                <Link to="/guide/q1" className={buttonStyle}>
+                <Link to="/guide/q2" className={buttonStyle}>
                     <div className="flex items-center gap-2">
                         <UtensilsCrossed className="w-4 h-4 absolute left-4" />
                         <span>Feed the Right Food</span>
@@ -102,21 +102,21 @@ const GuidePage = () => {
                     </div>
                 </Link>
 
-                <Link to="/guide/q1" className={buttonStyle}>
+                <Link to="/guide/q3" className={buttonStyle}>
                     <div className="flex items-center gap-2">
                         <Droplets className="w-4 h-4 absolute left-4" />
                         <span>Clean The Litter Box</span>
                         <ArrowRight className="w-4 h-4 absolute right-4" />
                     </div>
                 </Link>
-                <Link to="/guide/q1" className={buttonStyle}>
+                <Link to="/guide/q4" className={buttonStyle}>
                     <div className="flex items-center gap-2">
                         <ToyBrick className="w-4 h-4 absolute left-4" />
                         <span>Play with Your Cat</span>
                         <ArrowRight className="w-4 h-4 absolute right-4" />
                     </div>
                 </Link>
-                <Link to="/guide/q1" className={buttonStyle}>
+                <Link to="/guide/q5" className={buttonStyle}>
                     <div className="flex items-center gap-2">
                         <ShowerHead className="w-4 h-4 absolute left-4" />
                         <span>Bathing Your Cat</span>
