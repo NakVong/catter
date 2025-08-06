@@ -1,11 +1,11 @@
 import NavBar from "@/components/NavBar"
-import CatSwiper from './CatSwiper'; 
+import CatCarousel from './CatSwiper'; 
 
 const MainPage = () => {
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>Main Page</h1>
-      <CatSwiper/>
+      //<CatCarousel/>
       <NavBar/>
     </div>
   );
