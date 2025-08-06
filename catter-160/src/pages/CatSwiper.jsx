@@ -43,11 +43,11 @@ export function CatCarousel() {
         {cats.map((cat, index) => (
           <CarouselItem key={index}>
             <Card className="p-4 rounded-2xl shadow-lg w-[320px] h-[560px] mx-auto flex flex-col justify-between">
-              <div className="relative h-[240px] rounded-xl overflow-hidden">
+              <div className="relative rounded-xl overflow-hidden">
                 <img
                   src={cat.image}
                   alt={cat.name}
-                  className="w-full h-full object-cover object-center rounded-xl"
+                  className="w-full h-auto object-contain rounded-xl max-h-72 mx-auto"
                 />
                 <div className="absolute top-3 right-3 w-9 h-9 bg-white rounded-full shadow-md flex items-center justify-center text-xl">
                   ❤️

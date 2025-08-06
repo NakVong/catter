@@ -5,8 +5,8 @@ import CatCarousel from './CatSwiper';
 const MainPage = () => {
   return (
     <div>
-      <h1 style={{ textAlign: 'center' }}>Main Page</h1>
-      //<CatCarousel/>
+      <h1 style={{ textAlign: 'center' }}></h1>
+      <CatCarousel/>
       <NavBar/>
     </div>
   );
