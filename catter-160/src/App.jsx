@@ -11,19 +11,6 @@ import './App.css';
 
 function App() {
   return (
-<<<<<<< HEAD
-    
-      
-=======
-    <>
-      {/* <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button>
-          <Mail className="mr-2 h-4 w-4" />
-          Send Mail
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div> */}
->>>>>>> origin/main
       <Router>
         <Routes>
           <Route path="/" element={ <FormPage /> }/>
