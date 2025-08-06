@@ -1,7 +1,7 @@
 import TinderCard from 'react-tinder-card';
 import styles from './CatSwiper.module.css';
 import tabbyImg from '../assets/tabby.jpg';
-import tigriImg from '../assets/white.jpg'; // 👈 Make sure this image is in src/assets/
+import tigriImg from '../assets/white.jpg';
 
 const cats = [
   {
@@ -30,9 +30,13 @@ const cats = [
 
 const CatSwiper = () => {
   return (
-    <div className={styles.cardContainer}>
+    <div className={styles.cardWrapper}>
       {cats.map((cat, index) => (
-        <TinderCard key={index} preventSwipe={['up', 'down']}>
+        <TinderCard
+          className={styles.swipe}
+          key={index}
+          preventSwipe={['up', 'down']}
+        >
           <div className={styles.catCard}>
             <div className={styles.imageContainer}>
               <img src={cat.image} alt={cat.name} className={styles.catImage} />
@@ -62,5 +66,6 @@ const CatSwiper = () => {
 };
 
 export default CatSwiper;
+
 
 
