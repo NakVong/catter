@@ -33,14 +33,17 @@
   border-radius: 16px;
   overflow: hidden;
   height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .catImage {
-  width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 16px;
+  object-position: center;
 }
+
 
 /* Heart icon */
 .heartIcon {
