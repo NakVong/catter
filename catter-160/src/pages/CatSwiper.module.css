@@ -1,34 +1,70 @@
+.cardWrapper {
+  position: relative;
+  width: 340px;
+  height: 580px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+/* Each swipeable card */
+.swipe {
+  position: absolute;
+}
+
+/* Card base style */
 .catCard {
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   width: 320px;
-  margin: auto;
+  height: 560px;
   font-family: 'Arial', sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
+/* Image container */
 .imageContainer {
   position: relative;
   border-radius: 16px;
   overflow: hidden;
+  height: 240px;
 }
 
+/* Cat image */
 .catImage {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 16px;
 }
 
+/* Heart icon in circle */
 .heartIcon {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
   background-color: #fff;
   border-radius: 50%;
-  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: 0.2s ease;
 }
 
+.heartIcon:hover {
+  background-color: #ffe6e6;
+  transform: scale(1.05);
+}
+
+/* Name and location section */
 .catInfo {
   margin-top: 0.5rem;
   text-align: left;
@@ -45,25 +81,31 @@
   font-size: 1.2rem;
 }
 
+/* Female gender icon */
 .femaleIcon {
   font-size: 1.2rem;
   color: #e75480;
   background-color: #fce4ec;
   border-radius: 50%;
-  padding: 0.2rem 0.5rem;
+  padding: 0.3rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .location {
   color: #666;
   font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  margin-top: 0.2rem;
 }
 
+/* Description box */
 .description {
   background-color: #fdf5f5;
   border-radius: 12px;
   padding: 0.8rem;
-  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #444;
 }
 
 .moreDetails {
@@ -72,5 +114,6 @@
   margin-top: 0.6rem;
   font-style: italic;
 }
+
 
 
