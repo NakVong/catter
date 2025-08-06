@@ -1,5 +1,5 @@
 import NavBar from "@/components/NavBar"
-import CatSwiper from './CatSwiper'; 
+import { CatSwiper } from './CatSwiper'; 
 
 const MainPage = () => {
   return (
