@@ -1,30 +1,76 @@
-.cardContainer {
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  gap: 1rem;
-  flex-wrap: wrap;
+.catCard {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  width: 320px;
+  margin: auto;
+  font-family: 'Arial', sans-serif;
 }
 
-.catCard {
-  width: 300px;
-  padding: 20px;
-  background: white;
+.imageContainer {
+  position: relative;
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  overflow: hidden;
 }
 
 .catImage {
   width: 100%;
-  height: 200px;
-  border-radius: 12px;
-  object-fit: cover;
+  border-radius: 16px;
+}
+
+.heartIcon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  background-color: #fff;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.catInfo {
+  margin-top: 0.5rem;
+  text-align: left;
+}
+
+.nameRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.catName {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.femaleIcon {
+  font-size: 1.2rem;
+  color: #e75480;
+  background-color: #fce4ec;
+  border-radius: 50%;
+  padding: 0.2rem 0.5rem;
+}
+
+.location {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 .description {
+  background-color: #fdf5f5;
+  border-radius: 12px;
+  padding: 0.8rem;
   margin-top: 1rem;
-  text-align: left;
-  font-size: 0.95rem;
 }
+
+.moreDetails {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 0.6rem;
+  font-style: italic;
+}
+
 
