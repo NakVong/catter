@@ -6,7 +6,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "../../components/ui/carousel";
 
 import tabbyImg from "../assets/tabby.jpg";
 import tigriImg from "../assets/white.jpg";
