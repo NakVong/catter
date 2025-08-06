@@ -31,8 +31,7 @@ import { Textarea } from "@/components/ui/textarea"
         return (
             ! isBlank &&
             wordCount >= 3 &&
-            !/[^a-zA-Z0-9\s?.',!]/.test(input) &&
-            ratio > 0.18
+            !/[^a-zA-Z0-9\s?.',!]/.test(input) 
         );
     }
 const FormSchema = z.object({

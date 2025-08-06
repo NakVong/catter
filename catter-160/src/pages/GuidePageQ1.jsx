@@ -1,4 +1,5 @@
 import NavBar from "@/components/NavBar"
+import { useParams } from 'react-router-dom';
 import * as React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Link } from "react-router-dom";
@@ -10,7 +11,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 
+const catQuestions = {
+  q1: {
+    title: "How to Trim Cat Nails",
+    steps: [/* your slide content here */],
+  },
+  q2: {
+    title: "How to Brush Your Cat",
+    steps: [/* other slide content */],
+  },
+  // ... more questions
+};
+
 const SubPage = () => {
+    const { questionId } = useParams();
+    const content = catQuestions[questionId];
+
+    if (!content) return <p>Question not found 😿</p>;
 
     const slides = [
     {
@@ -34,7 +51,7 @@ const SubPage = () => {
         <div className="min-h-screen flex flex-wrap flex-col items-center justify-center gap-8">
 
             <h1 className="text-2xl font-extrabold bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-md">
-            ✂️ How to Trim Your Cat’s Claws Like a Pro 🐱
+            {content.title}
             </h1>
 
 
