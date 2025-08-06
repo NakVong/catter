@@ -1,3 +1,4 @@
+import NavBar from "@/components/NavBar"
 import CatSwiper from './CatSwiper'; 
 
 const MainPage = () => {
@@ -13,6 +14,7 @@ const MainPage = () => {
       </div>
 
       <CatSwiper/>
+      <NavBar/>
     </div>
   );
 };
