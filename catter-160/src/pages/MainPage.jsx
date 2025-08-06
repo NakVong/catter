@@ -1,6 +1,7 @@
 import NavBar from "@/components/NavBar"
 import CatCarousel from './CatSwiper'; 
 
+
 const MainPage = () => {
   return (
     <div>
