@@ -1,5 +1,5 @@
 import TinderCard from 'react-tinder-card';
-import './CatSwiper.css';
+import styles from './CatSwiper.module.css';
 
 const cats = [
   {
@@ -13,15 +13,33 @@ const cats = [
     sex: 'Male',
     spayed: 'Spayed',
   },
-  // Add more cats here...
+  // You can add more cat objects here
 ];
 
 const CatSwiper = () => {
   return (
-    <div>
-      <h2>Cat Swiper is rendering!</h2>
+    <div className={styles.cardContainer}>
+      {cats.map((cat, index) => (
+        <TinderCard key={index} preventSwipe={['up', 'down']}>
+          <div className={styles.catCard}>
+            <img src={cat.image} alt={cat.name} className={styles.catImage} />
+            <h2>{cat.name}</h2>
+            <p>{cat.location}</p>
+            <div className={styles.description}>
+              <p><strong>Age:</strong> {cat.age}</p>
+              <p><strong>Breed:</strong> {cat.breed}</p>
+              <p><strong>Weight:</strong> {cat.weight}</p>
+              <p><strong>Color:</strong> {cat.color}</p>
+              <p><strong>Sex:</strong> {cat.sex}</p>
+              <p><strong>Spayed:</strong> {cat.spayed}</p>
+            </div>
+          </div>
+        </TinderCard>
+      ))}
     </div>
-  );  
+  );
 };
 
 export default CatSwiper;
+
+

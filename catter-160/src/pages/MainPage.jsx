@@ -4,7 +4,7 @@ const MainPage = () => {
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>Main Page</h1>
-      <CatSwiper />
+      <CatSwiper/>
     </div>
   );
 };
