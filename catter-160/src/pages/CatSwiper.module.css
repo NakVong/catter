@@ -6,14 +6,12 @@
   margin-top: 40px;
 }
 
-/* Position each TinderCard */
 .swipe {
   position: absolute;
   width: 100%;
   height: 100%;
 }
 
-/* Main card styles */
 .catCard {
   background-color: #fff;
   border-radius: 20px;
