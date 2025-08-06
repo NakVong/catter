@@ -1,6 +1,7 @@
 import TinderCard from 'react-tinder-card';
 import styles from './CatSwiper.module.css';
 import tabbyImg from '../assets/tabby.jpg';
+;
 const cats = [
   {
     name: 'Samantha',
