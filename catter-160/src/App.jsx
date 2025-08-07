@@ -14,11 +14,6 @@ import './App.css';
 
 function App() {
   return (
-<<<<<<< HEAD
-=======
-    <>
-      
->>>>>>> origin/eva
       <Router>
         <Routes>
           <Route path="/" element={ <FormPage /> }/>
