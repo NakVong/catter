@@ -17,7 +17,9 @@ const FormPage = () => {
       return;
     }
     const formId = saveFormData(username);
-    alert(`Form saved for user ${username}! ID: ${formId}`);
+    console.log(`Form saved for user ${username}! ID: ${formId}`);
+
+    navigate("/main");
   };
 
   const handleClearAll = () => {
