@@ -1,7 +1,10 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import MainPage from './pages/MainPage';
 import GuidePage from './pages/GuidePage';
+import GuideQuestionPage from './pages/GuidePageQ1';
+import GuidePageUserQuestion from './pages/GuideUserQuestion';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
 import FormPage from './pages/FormPage';
@@ -11,11 +14,18 @@ import './App.css';
 
 function App() {
   return (
+<<<<<<< HEAD
+=======
+    <>
+      
+>>>>>>> origin/eva
       <Router>
         <Routes>
           <Route path="/" element={ <FormPage /> }/>
           <Route path="/main" element={ <MainPage/> }/>
-          <Route path="/guide" element={ <GuidePage/> }/>
+                  <Route path="/guide" element={<GuidePage />} />
+                  <Route path="/guide/:questionId" element={<GuideQuestionPage />} />
+                  <Route path="/guide/userquestion" element={<GuidePageUserQuestion />} />
           <Route path="/chat" element={ <ChatPage/> }/>
           <Route path="/profile" element={ <ProfilePage/> }/>
         </Routes>
