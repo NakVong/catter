@@ -32,9 +32,6 @@ const FormPage = () => {
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
-
-            {/* Bottom Nav */}
-            <NavBar />
         </div>
     );
 };
