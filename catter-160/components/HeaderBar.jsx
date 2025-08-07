@@ -8,8 +8,8 @@ const HeaderBar = () => {
             <div className="w-12 h-12 overflow-hidden">
                 <img src={cat} alt="Cat" className="w-full h-full object-cover" />
             </div>
-            <Link to="/profile" className="text-purple-500 flex flex-col items-center text-xs">
-                <User size={20} />
+            <Link to="/profile" className="text-rose-500 flex flex-col items-center text-xs">
+                <User />
                 Profile
             </Link>
         </div>

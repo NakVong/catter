@@ -1,34 +1,32 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Form } from 'react-router-dom';
 import MainPage from './pages/MainPage';
 import GuidePage from './pages/GuidePage';
 import ChatPage from './pages/ChatPage';
 import ProfilePage from './pages/ProfilePage';
 import FormPage from './pages/FormPage';
-import { Button } from "@/components/ui/button"
-import { Mail, ArrowRight } from "lucide-react"
+import TutorialPage from './pages/TutorialPage';
 import './App.css';
+import QuestionPage from './pages/QuestionPage';
+import { FormProvider } from './pages/FormContext';
+import TestPage from './pages/TestPage';
 
 function App() {
   return (
-    <>
-      {/* <div className="flex min-h-svh flex-col items-center justify-center">
-        <Button>
-          <Mail className="mr-2 h-4 w-4" />
-          Send Mail
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div> */}
+    <FormProvider>
       <Router>
         <Routes>
-          <Route path="/" element={ <FormPage /> }/>
+          <Route path="/" element={ <TutorialPage /> } />
+          <Route path="/form" element={ <FormPage /> } />
           <Route path="/main" element={ <MainPage/> }/>
           <Route path="/guide" element={ <GuidePage/> }/>
           <Route path="/chat" element={ <ChatPage/> }/>
           <Route path="/profile" element={ <ProfilePage/> }/>
+          <Route path="/question" element={ <QuestionPage/> } />
+          <Route path="/test" element={ <TestPage/> } />
         </Routes>
       </Router>
-    </>
+    </FormProvider>
   );
 };
 
