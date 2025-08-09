@@ -195,7 +195,7 @@ const SubPage = () => {
                     <CarouselItem key={index}>
                         <div className="p-1">
                         <Card>
-                            <CardContent className="h-85    flex flex-col items-center justify-center p-6 space-y-3 text-center">
+                            <CardContent className="h-85 flex flex-col items-center justify-center p-6 space-y-3 text-center">
                             <img src={slide.image} alt={slide.title} className="w-60 h-50 object-contain" />
                             <h2 className="text-xl font-bold">{slide.title}</h2>
                             <p className="text-sm text-gray-600">{slide.description}</p>

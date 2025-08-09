@@ -55,7 +55,7 @@ import { Mail, ArrowRight, Scissors, UtensilsCrossed, Droplets, ToyBrick, Shower
 
 const buttonGroupStyle = "flex min-h-screen flex-wrap flex-col items-center justify-center gap-8";
 const buttonStyle =
-    "relative w-64 h-8 bg-gray-100 text-gray-900 rounded flex justify-center items-center";
+    "relative w-64 h-12 border-4 bg-gray-100 text-gray-900 rounded flex justify-center items-center";
 
 
 
@@ -84,6 +84,7 @@ const GuidePage = () => {
             className=''
         > 
             <div className={buttonGroupStyle}>
+
                 <div>
                     Recommended For You!
                 </div>
