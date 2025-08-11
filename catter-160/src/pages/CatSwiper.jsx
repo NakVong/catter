@@ -6,30 +6,30 @@ import { cats, cats as initialCats } from "../data/cats";
 import { Card } from "@/components/ui/card";
 import fs from "fs/promises";
 import path from "path";
-import { useFormContext } from "./FormContext";
-
-function addChatToStorage(name) {
-	try {
-		const key = "catter_chats_v1";
-		const list = JSON.parse(localStorage.getItem(key) || "[]");
-		if (!list.some((c) => c.name === name)) {
-			list.unshift({
-				id: crypto.randomUUID(),
-				name,
-				createdAt: Date.now(),
-				lastMessageAt: null,
-				messages: [],
-			});
-			localStorage.setItem(key, JSON.stringify(list));
-			// notify any open pages
-			window.dispatchEvent(new Event("catter:chatsChanged"));
-		}
-	} catch (e) {
-		console.error("Failed to add chat to storage", e);
-	}
-}
 
 //HELPERS
+function addChatToStorage(name) {
+  try {
+    const key = "catter_chats_v2"; // match ChatPage
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!list.some((c) => c.name === name)) {
+      list.unshift({
+        id: crypto.randomUUID(),
+        name,
+        createdAt: Date.now(),
+        lastMessageAt: null,
+        messages: [],
+      });
+      localStorage.setItem(key, JSON.stringify(list));
+      // notify any open pages
+      window.dispatchEvent(new Event("catter:chatsChanged"));
+    }
+  } catch (e) {
+    console.error("Failed to add chat to storage", e);
+  }
+}
+
+
 function formatAge(age) {
 	const num = parseFloat(age);
 	if (isNaN(num)) return age;
@@ -77,42 +77,10 @@ const HealthCard = ({ status, label }) => {
 //MAIN EXPORT FUNCTION
 
 export default function CatSwiperFM() {
-	const username = localStorage.getItem("catter-username") || "";
-	const { formData, savedForms } = useFormContext();
-
-	const userForms = username ? savedForms[username] || [] : [];
-	const latestUserInfo =
-		userForms.length > 0 ? userForms[userForms.length - 1] : formData;
-
-	const catsRanking = latestUserInfo.catRanking;
-	console.log(catsRanking);
-
-	function sortCatsByRanking(cats, ranking) {
-		// Convert ranking object into an array sorted by rank number
-		const sortedNames = Object.keys(ranking)
-			.sort((a, b) => Number(a) - Number(b))
-			.map((rank) => ranking[rank]);
-
-		// Create a new array by matching sorted names to the cat objects
-		const sortedCats = sortedNames.map((name) =>
-			cats.find((cat) => cat.name === name),
-		);
-
-		return sortedCats;
-	}
-
 	const [list, setList] = useState(() => {
 		const savedCats = localStorage.getItem("currCats");
 		return savedCats ? JSON.parse(savedCats) : initialCats;
 	});
-
-	const list2 = sortCatsByRanking(list, catsRanking);
-
-	list2.forEach((cat) => {
-		cat.likedByUser = false;
-	});
-
-	console.log(list2);
 
 	const [index, setIndex] = useState(() => {
 		const savedIndex = localStorage.getItem("catIndex");
@@ -120,18 +88,18 @@ export default function CatSwiperFM() {
 	});
 
 	useEffect(() => {
-		localStorage.setItem("currCats", JSON.stringify(list2));
+		localStorage.setItem("currCats", JSON.stringify(list));
 		localStorage.setItem("catIndex", index);
-	}, [index, list2]);
-	const next = () => setIndex((i) => (i + 1) % list2.length);
+	}, [index, list]);
+	const next = () => setIndex((i) => (i + 1) % list.length);
 
 	const prevCat = () => {
 		if (index === 0) return; // at first cat, do nothing
 		setFlippedIndex(null); // reset flip so front shows
-		setIndex((i) => (i - 1 + list2.length) % list2.length);
+		setIndex((i) => (i - 1 + list.length) % list.length);
 	};
 
-	const cat = list2[index];
+	const cat = list[index];
 	if (!cat) return null;
 	const [dir, setDir] = useState(0); // -1 left, 1 right
 	const [flippedIndex, setFlippedIndex] = useState(null);
@@ -151,9 +119,7 @@ export default function CatSwiperFM() {
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
 				);
 				addChatToStorage(cat.name);
-				window.dispatchEvent(
-					new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }),
-				);
+  				window.dispatchEvent(new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }));
 
 				next(1);
 			} else {
