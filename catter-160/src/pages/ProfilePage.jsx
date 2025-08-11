@@ -16,7 +16,7 @@ const ProfilePage = () => {
         breed: "Tabby",
         weight: 2.4,
         weightUnit: "kg",
-        color: "Orange",
+        color: "Tabby grey",
         sex: "Male",
         spayed: "Yes",
     });
