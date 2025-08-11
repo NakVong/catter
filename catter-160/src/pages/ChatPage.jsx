@@ -10,7 +10,7 @@ import HeaderBar from "@/components/HeaderBar";
 import NavBar from "@/components/NavBar";
 
 
-const FIVE_MIN = 5 * 60 * 1000;
+const FIVE_MIN = 35 * 1000;
 const catsByName = Object.fromEntries(CATS.map((c) => [c.name, c]));
 const loadChats = () => {
   try { return JSON.parse(localStorage.getItem("catter_chats_v1") || "[]"); }
