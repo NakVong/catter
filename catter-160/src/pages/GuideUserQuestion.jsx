@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { useFormContext } from "@/src/pages/FormContext";
 import NavBar from "@/components/NavBar";
 
 const SubPage = () => {
@@ -10,7 +11,14 @@ const SubPage = () => {
 	const location = useLocation();
 	console.log(location.state?.data.userQuestion);
 	const question = location.state?.data.userQuestion;
+	const selectedUser = location.state?.data.username;
 	const [response, setResponse] = useState(null);
+
+	const { formData, savedForms } = useFormContext();
+
+	const userForms = selectedUser ? savedForms[selectedUser] || [] : [];
+  	const latestUserInfo = userForms.length > 0 ? userForms[userForms.length - 1].data : formData;
+	console.log(JSON.stringify(latestUserInfo))
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -30,7 +38,7 @@ const SubPage = () => {
 					body: JSON.stringify({
 						userQuestion: question,
 						catInfo: "",
-						userInfo: "",
+						userInfo: JSON.stringify(latestUserInfo),
 					}),
 				});
 

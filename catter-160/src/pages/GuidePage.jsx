@@ -68,12 +68,14 @@ const GuidePage = () => {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			userQuestion: "",
+			username: "nak"
 		},
 	});
 
 	function onSubmit(data) {
-		console.log("text before navigate:", data);
-		navigate("/guide/userquestion", { state: { data } });
+		const dataWithUsername = { ...data, username: "nak" };
+		console.log("text before navigate:", dataWithUsername);
+		navigate("/guide/userquestion", { state: { data: dataWithUsername } });
 	}
 	return (
 		<div id="main" className="">
