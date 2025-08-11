@@ -1,14 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Pencil, Save } from "lucide-react";
 import HeaderBar from "@/components/HeaderBar";
 import NavBar from "@/components/NavBar";
-import cat from "../assets/cat.jpg";
 
 const ProfilePage = () => {
     const [editMode, setEditMode] = useState(false);
     const [image, setImage] = useState("");
-
     const [catDetails, setCatDetails] = useState({
         name: "",
         years: 0,
@@ -21,6 +19,26 @@ const ProfilePage = () => {
         spayed: "",
     });
 
+    const username = localStorage.getItem("catter-username") || "";
+
+    // Load catInfo and image on mount
+    useEffect(() => {
+        const saved = localStorage.getItem("catter-saved-forms");
+        const parsed = saved ? JSON.parse(saved) : {};
+
+        if (username && parsed[username] && parsed[username].length > 0) {
+            const latestEntry = parsed[username][parsed[username].length - 1];
+            const latestCatInfo = latestEntry.catInfo || {};
+            const savedImage = latestEntry.catImage || "";
+            
+            setCatDetails(prev => ({
+                ...prev,
+                ...latestCatInfo
+            }));
+            setImage(savedImage);
+        }
+    }, [username]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCatDetails((prev) => ({
@@ -32,16 +50,58 @@ const ProfilePage = () => {
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setImage(imageUrl);
+            // Convert file to base64 string
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const base64String = event.target.result;
+                setImage(base64String);
+                
+                // If in edit mode, save immediately to localStorage
+                if (editMode) {
+                    saveCatImage(base64String);
+                }
+            };
+            reader.readAsDataURL(file);
         }
     };
 
-    const toggleEdit = () => setEditMode((prev) => !prev);
+    const toggleEdit = () => {
+        if (editMode) {
+            saveCatInfo(catDetails);
+            // Image is already saved when selected, but save again to be sure
+            saveCatImage(image);
+        }
+        setEditMode((prev) => !prev);
+    };
+
+    const saveCatInfo = (newCatInfo) => {
+        const saved = localStorage.getItem("catter-saved-forms");
+        const parsed = saved ? JSON.parse(saved) : {};
+
+        if (!username || !parsed[username] || parsed[username].length === 0) {
+            console.error("No saved forms found for this user.");
+            return;
+        }
+
+        parsed[username][parsed[username].length - 1].catInfo = newCatInfo;
+        localStorage.setItem("catter-saved-forms", JSON.stringify(parsed));
+    };
+
+    const saveCatImage = (imageData) => {
+        const saved = localStorage.getItem("catter-saved-forms");
+        const parsed = saved ? JSON.parse(saved) : {};
+
+        if (!username || !parsed[username] || parsed[username].length === 0) {
+            console.error("No saved forms found for this user.");
+            return;
+        }
+
+        parsed[username][parsed[username].length - 1].catImage = imageData;
+        localStorage.setItem("catter-saved-forms", JSON.stringify(parsed));
+    };
 
     return (
-         <div className="relative h-screen bg-white flex flex-col items-center">
-            {/* Header */}
+        <div className="relative h-screen bg-white flex flex-col items-center">
             <HeaderBar/>
 
             <Card className="relative mt-12 w-[90%] max-w-md bg-pink-50 text-center p-6 rounded-3xl shadow-md">
@@ -59,6 +119,7 @@ const ProfilePage = () => {
                         value={catDetails.name}
                         onChange={handleChange}
                         className="text-3xl font-bold mb-4 text-center border rounded px-2 py-1 w-full"
+                        placeholder="Name"
                     />
                 ) : (
                     <h1 className="text-3xl font-bold mb-4">{catDetails.name}</h1>
@@ -66,7 +127,7 @@ const ProfilePage = () => {
 
                 <div className="relative inline-block">
                     <div className="w-full aspect-[2955/3694] overflow-hidden shadow-md mx-auto">
-                        <img src={image} alt="Cat" className="w-full h-full object-cover" />
+                        <img src={image || "/placeholder.jpg"} alt="Cat" className="w-full h-full object-cover" />
                     </div>
                     {editMode && (
                         <input
@@ -109,6 +170,7 @@ const ProfilePage = () => {
                                     value={catDetails.breed}
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
+                                    placeholder="Breed"
                                 />
 
                                 {/* Weight */}
@@ -125,7 +187,8 @@ const ProfilePage = () => {
                                         value={catDetails.weightUnit}
                                         onChange={handleChange}
                                         className="border rounded px-2 py-1"
-                                    >
+                                    >   
+                                        <option value="">Select</option>
                                         <option value="kg">kg</option>
                                         <option value="lbs">lbs</option>
                                     </select>
@@ -138,6 +201,7 @@ const ProfilePage = () => {
                                     value={catDetails.color}
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
+                                    placeholder="Color"
                                 />
 
                                 {/* Sex */}
@@ -147,6 +211,7 @@ const ProfilePage = () => {
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
                                 >
+                                    <option value="">Select</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -158,6 +223,7 @@ const ProfilePage = () => {
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
                                 >
+                                    <option value="">Select</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>

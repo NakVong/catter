@@ -120,7 +120,8 @@ export const FormProvider = ({ children }) => {
         id: Date.now(),
         timestamp: new Date().toISOString(),
         data: { ...formData },
-        catRanking: json
+        catRanking: json,
+        catInfo: {}
       };
 
       console.log(submission)
