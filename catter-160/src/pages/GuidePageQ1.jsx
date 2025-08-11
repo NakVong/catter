@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import {
 	Carousel,
 	CarouselContent,
@@ -211,6 +213,8 @@ const SubPage = () => {
 
 	if (!content) return <p>Question not found 😿</p>;
 
+	const navigate = useNavigate();
+
 	return (
 		<>
 			<HeaderBar/>
@@ -244,8 +248,8 @@ const SubPage = () => {
 					<CarouselPrevious />
 					<CarouselNext />
 				</Carousel>
-				<button className="z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white shadow-lg hover:bg-gray-100">
-					<ArrowBigLeft className="w-6 h-6 text-red-500 fill-red-500" />
+				<button onClick={() => navigate("/guide")} className="z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white shadow-lg hover:bg-gray-100">
+					<ArrowBigLeft  className="w-6 h-6 text-red-500 fill-red-500" />
 					<span className="text-gray-800 font-medium">Back</span>
 				</button>
 			</div>
