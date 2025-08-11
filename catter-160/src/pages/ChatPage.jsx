@@ -156,22 +156,14 @@ export default function ChatPage() {
   };
 
   return (
-    <>      {/* Header (profile button restored) */}
-      <div className="flex justify-between items-center px-4 py-4">
-        <div className="flex items-center space-x-2">
-          <img src={paw} alt="paw" className="h-20 w-auto mt-2 -ml-6" />
-        </div>
-        <Link to="/profile">
-          <Avatar className="w-14 h-14 border border-gray-300">
-            <AvatarImage src={profile} alt="me" />
-          </Avatar>
-        </Link>
-      </div>
+    <>      
+      {/* Header (profile button restored) */}
+      <HeaderBar/>
 
 
       {selectedName ? (
         <>
-          <div className="mt-2 w-full text-left px-4">
+          <div className="mt-12 w-full text-left px-4">
             <button onClick={() => setSelectedName(null)} className="text-xl font-medium">← Back</button>
           </div>
           <div className="mt-4 ml-0 text-3xl font-bold pl-4">{selectedName}</div>
@@ -222,7 +214,7 @@ export default function ChatPage() {
           )}
         </>
       ) : (
-        <div className="px-6 mt-2 pb-24">
+        <div className="px-6 mt-12 pb-24">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-4xl font-semibold text-left">Chats</h2>
           </div>
