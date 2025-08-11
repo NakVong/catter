@@ -9,8 +9,9 @@ import {
   ChevronDown,
   ChevronUp,
 } from "lucide-react";
-import paw from "../assets/catter-logo.png";
 import profile from "../assets/cat.jpg";
+import HeaderBar from "@/components/HeaderBar";
+import NavBar from "@/components/NavBar";
 
 /* ───────────────── Chat Card ───────────────── */
 const ChatCard = ({
@@ -152,16 +153,7 @@ const ChatPage = () => {
   return (
     <>
       {/* Shared Header */}
-      <div className="flex justify-between items-center px-4 py-4">
-        <div className="flex items-center space-x-2">
-          <img src={paw} alt="paw" className="h-25 w-auto mt-2 -ml-12" />
-        </div>
-        <Link to="/profile">
-          <Avatar className="w-15 h-15 border-3 border-gray-300 text-3xl flex items-center justify-center">
-            👤
-          </Avatar>
-        </Link>
-      </div>
+      <HeaderBar/>
 
       {/* Back button for any subpage / selection mode */}
       {(selectedChat || selectMode || successPage) && (
@@ -408,27 +400,7 @@ const ChatPage = () => {
       )}
 
       {/* Bottom Navigation (always) */}
-      <div className="fixed bottom-0 left-0 w-full bg-white border-t flex justify-around items-center h-16">
-        <Link to="/main" className="text-gray-400 flex flex-col items-center text-xs">
-          <House />
-          Home
-        </Link>
-        <Link to="/guide" className="text-gray-400 flex flex-col items-center text-xs">
-          <BookText />
-          Guides
-        </Link>
-        <Link to="/chat" className="text-purple-500 relative flex flex-col items-center text-xs">
-          <MessageSquare />
-          Chat
-          <span className="absolute top-0 right-2 bg-red-500 text-white text-xs rounded-full px-1">
-            4
-          </span>
-        </Link>
-        <Link to="/profile" className="text-gray-400 flex flex-col items-center text-xs">
-          <User />
-          Profile
-        </Link>
-      </div>
+      <NavBar/>
     </>
   );
 };

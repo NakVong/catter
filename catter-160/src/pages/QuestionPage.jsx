@@ -5,6 +5,14 @@ import { User, Cat, Home, ArrowLeft, Check } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormContext } from "./FormContext";
 
+const goPrev = () => {
+
+}
+
+const goNext = () => {
+
+}
+
 const questions = {
   personality: {
     title: "Personality",
@@ -188,6 +196,25 @@ const QuestionPage = () => {
     );
   }
 
+  const navigate = useNavigate();
+
+  const questionKeys = Object.keys(questions);
+  const currentIndex = questionKeys.indexOf(ask);
+
+  const goPrev = () => {
+    if (currentIndex > 0) {
+      const prevQuestion = questionKeys[currentIndex - 1];
+      navigate(`/question?ask=${prevQuestion}`);
+    }
+  };
+
+  const goNext = () => {
+    if (currentIndex < questionKeys.length - 1) {
+      const nextQuestion = questionKeys[currentIndex + 1];
+      navigate(`/question?ask=${nextQuestion}`);
+    }
+  };
+
   return (
     <div className="h-[850px] bg-pink-50 p-4">
       <div className="w-full max-w-md mx-auto">
@@ -265,10 +292,10 @@ const QuestionPage = () => {
 
         {/* Navigation Buttons */}
         <div className="flex justify-between">
-          <Button variant="outline" className="px-8 py-2 border-gray-300">
+          <Button onClick={goPrev} variant="outline" className="px-8 py-2 border-gray-300">
             Prev
           </Button>
-          <Button variant="outline" className="px-8 py-2 border-gray-300">
+          <Button onClick={goNext} variant="outline" className="px-8 py-2 border-gray-300">
             Next
           </Button>
         </div>

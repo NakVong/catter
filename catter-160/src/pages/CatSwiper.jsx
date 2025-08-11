@@ -112,7 +112,7 @@ export default function CatSwiperFM() {
 		setFlippedIndex((cur) => (cur === index ? null : index));
 
 	return (
-		<div className="w-full flex items-center justify-center py-8 select-none">
+		<div className="w-full flex items-center justify-center py-8 select-none mt-6">
 			<div className="relative w-[360px] h-[720px]">
 				<AnimatePresence custom={dir} mode="wait">
 					<motion.div

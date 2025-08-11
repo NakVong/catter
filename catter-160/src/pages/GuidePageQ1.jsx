@@ -19,6 +19,7 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
+import HeaderBar from "@/components/HeaderBar";
 
 const slidesQ1 = [
 	{
@@ -212,6 +213,7 @@ const SubPage = () => {
 
 	return (
 		<>
+			<HeaderBar/>
 			<div className="min-h-screen flex flex-wrap flex-col items-center justify-center gap-8">
 				<h1 className="text-2xl font-extrabold bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-md">
 					{content.title}
