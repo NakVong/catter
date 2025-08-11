@@ -19,7 +19,12 @@ const FormPage = () => {
 
     setUsername(username)
 
-    navigate("/main");
+    const submitButton = document.querySelector(".submit-button");
+    submitButton.innerHTML = "Generating recommendations..."
+
+    setTimeout(() => {
+      navigate("/main");
+    }, 3000);
   };
 
   const handleClearAll = () => {
@@ -139,7 +144,7 @@ const FormPage = () => {
         <div className="mt-4 space-y-2">
           <Button
             onClick={handleSubmit}
-            className="w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-lg shadow-md text-sm"
+            className="submit-button w-full bg-rose-300 hover:bg-rose-400 text-white font-semibold py-2 rounded-lg shadow-md text-sm"
           >
             Submit Form
           </Button>
