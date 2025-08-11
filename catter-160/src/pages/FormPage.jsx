@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Pencil, Mars } from "lucide-react";
 import cat from "../assets/cat.jpg";
+import NavBar from "@/components/NavBar";
 
 const FormPage = () => {
 	return (
