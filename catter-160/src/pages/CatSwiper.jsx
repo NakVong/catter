@@ -8,6 +8,28 @@ import fs from "fs/promises";
 import path from "path";
 import { useFormContext } from "./FormContext";
 
+function addChatToStorage(name) {
+  try {
+    const key = "catter_chats_v1";
+    const list = JSON.parse(localStorage.getItem(key) || "[]");
+    if (!list.some((c) => c.name === name)) {
+      list.unshift({
+        id: crypto.randomUUID(),
+        name,
+        createdAt: Date.now(),
+        lastMessageAt: null,
+        messages: [],
+      });
+      localStorage.setItem(key, JSON.stringify(list));
+      // notify any open pages
+      window.dispatchEvent(new Event("catter:chatsChanged"));
+    }
+  } catch (e) {
+    console.error("Failed to add chat to storage", e);
+  }
+}
+
+
 //HELPERS
 function formatAge(age) {
 	const num = parseFloat(age);
@@ -125,6 +147,9 @@ export default function CatSwiperFM() {
 				setList((prev) =>
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
 				);
+				addChatToStorage(cat.name);
+				window.dispatchEvent(new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }));
+
 				next(1);
 			} else {
 				setList((prev) =>

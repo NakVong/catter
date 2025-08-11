@@ -19,19 +19,16 @@ function App() {
 		<FormProvider>
 			<Router>
 				<Routes>
-					<Route path="/" element={<FormPage />} />
+					<Route path="/" element={<TutorialPage />} />
 					<Route path="/main" element={<MainPage />} />
-          <Route path="/form" element={ <FormPage /> } />
+          			<Route path="/form" element={ <FormPage /> } />
 					<Route path="/guide" element={<GuidePage />} />
 					<Route path="/guide/:questionId" element={<GuideQuestionPage />} />
-					<Route
-						path="/guide/userquestion"
-						element={<GuidePageUserQuestion />}
-					/>
+					<Route path="/guide/userquestion" element={<GuidePageUserQuestion />}/>
 					<Route path="/chat" element={<ChatPage />} />
 					<Route path="/profile" element={<ProfilePage />} />
-          <Route path="/question" element={ <QuestionPage/> } />
-          <Route path="/test" element={ <TestPage/> } />
+					<Route path="/question" element={ <QuestionPage/> } />
+					<Route path="/test" element={ <TestPage/> } />
 				</Routes>
 			</Router>
 		</FormProvider>
