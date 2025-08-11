@@ -56,13 +56,15 @@ const SubPage = () => {
 		fetchData();
 	}, [question]);
 
+	const username = localStorage.getItem('catter-username') || "";
+
 	return (
 		<>
 			<HeaderBar/>
 			<div className="max-w-xl mx-auto p-6 bg-white min-h-screen rounded-xl shadow-md  border border-gray-200 mt-12">
 				<div>
 					<h2 className="text-lg font-semibold text-gray-800 mb-1">
-						Your question:
+						{username} question:
 					</h2>
 					<p className="text-gray-600 italic">{question}</p>
 				</div>

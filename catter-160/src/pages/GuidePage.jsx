@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -69,12 +69,12 @@ const GuidePage = () => {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			userQuestion: "",
-			username: "nak"
+			username: ""
 		},
 	});
 
 	function onSubmit(data) {
-		const dataWithUsername = { ...data, username: "nak" };
+		const dataWithUsername = { ...data, username: localStorage.getItem('catter-username') || ""};
 		console.log("text before navigate:", dataWithUsername);
 		navigate("/guide/userquestion", { state: { data: dataWithUsername } });
 	}

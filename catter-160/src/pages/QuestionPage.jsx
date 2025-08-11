@@ -5,14 +5,6 @@ import { User, Cat, Home, ArrowLeft, Check } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormContext } from "./FormContext";
 
-const goPrev = () => {
-
-}
-
-const goNext = () => {
-
-}
-
 const questions = {
   personality: {
     title: "Personality",
