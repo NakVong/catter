@@ -76,14 +76,6 @@ const FormPage = () => {
           <h1 className="text-4xl font-bold">
             Catter<span className="ml-1">🐾</span>
           </h1>
-          {/* Optional: Username input */}
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value.trim())}
-            placeholder="Enter username"
-            className="mt-2 p-1 border rounded w-full text-center text-sm"
-          />
         </div>
 
         {/* Content */}
@@ -133,6 +125,15 @@ const FormPage = () => {
             </Card>
           ))}
         </div>
+        
+        {/* Username input */}
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value.trim())}
+          placeholder="Enter username after you have filled out the form"
+          className="mt-2 p-1 border rounded w-full text-center text-sm"
+        />
 
         {/* Submit Button */}
         <div className="mt-4 space-y-2">
