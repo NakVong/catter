@@ -1,9 +1,5 @@
 const GuidePage = () => {
-    return (
-        <div>
-            Guide!
-        </div>
-    );
+	return <div>Guide!</div>;
 };
 
-export default GuidePage
+export default GuidePage;
