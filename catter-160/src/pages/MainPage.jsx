@@ -1,18 +1,13 @@
 import NavBar from "@/components/NavBar";
 import CatSwiper from "./CatSwiper";
 import logo from "../assets/Catter.png";
+import paw from "../assets/catter-logo.png";
 
 const MainPage = () => {
 	return (
 		<div>
 			{/* Logo in top-left */}
-			<div className="p-4">
-				<img
-					src={logo}
-					alt="Catter Logo"
-					className="h-12 w-auto object-contain"
-				/>
-			</div>
+			<img src={paw} alt="paw" className="h-25 w-auto mt-2 -ml-12" />
 
 			<CatSwiper />
 			<NavBar />
