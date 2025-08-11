@@ -1,13 +1,23 @@
-import CatSwiper from './CatSwiper'; 
+import NavBar from "@/components/NavBar";
+import CatSwiper from "./CatSwiper";
+import logo from "../assets/Catter.png";
 
 const MainPage = () => {
-  return (
-    <div>
-      <h1 style={{ textAlign: 'center' }}>Main Page</h1>
-      <CatSwiper />
-    </div>
-  );
+	return (
+		<div>
+			{/* Logo in top-left */}
+			<div className="p-4">
+				<img
+					src={logo}
+					alt="Catter Logo"
+					className="h-12 w-auto object-contain"
+				/>
+			</div>
+
+			<CatSwiper />
+			<NavBar />
+		</div>
+	);
 };
 
 export default MainPage;
-
