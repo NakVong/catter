@@ -7,9 +7,7 @@ import { useState } from "react";
 
 const FormPage = () => {
   const navigate = useNavigate();
-  const { formData, saveFormData, savedForms, clearAllForms } = useFormContext();
-
-  const [username, setUsername] = useState("");
+  const { username, setUsername, formData, saveFormData, savedForms, clearAllForms } = useFormContext();
 
   const handleSubmit = () => {
     if (!username) {
@@ -18,6 +16,8 @@ const FormPage = () => {
     }
     const formId = saveFormData(username);
     console.log(`Form saved for user ${username}! ID: ${formId}`);
+
+    setUsername(username)
 
     navigate("/main");
   };

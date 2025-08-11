@@ -23,6 +23,7 @@ export const FormProvider = ({ children }) => {
     homeType: null,
     otherPresence: null,
   });
+  
 
   // Load saved forms from localStorage on component mount
   const [savedForms, setSavedForms] = useState(() => {
@@ -34,6 +35,24 @@ export const FormProvider = ({ children }) => {
       return {};
     }
   });
+
+  // NEW: username state persisted in localStorage
+  const [username, setUsername] = useState(() => {
+    try {
+      return localStorage.getItem('catter-username') || "";
+    } catch {
+      return "";
+    }
+  });
+
+  // Save username to localStorage on change
+  useEffect(() => {
+    try {
+      localStorage.setItem('catter-username', username);
+    } catch (error) {
+      console.error('Error saving username to localStorage:', error);
+    }
+  }, [username]);
 
   // Load current form data from localStorage on component mount
   useEffect(() => {
@@ -179,6 +198,8 @@ export const FormProvider = ({ children }) => {
         clearAllForms,
         clearCurrentForm,
         savedForms,
+        username,
+        setUsername,
       }}
     >
       {children}
