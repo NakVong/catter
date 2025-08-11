@@ -29,6 +29,7 @@ export const cats = [
 			disease: "None",
 		},
 		likedByUser: false,
+		adtopedByUser: false
 	},
 	{
 		name: "Tigri",
@@ -51,6 +52,7 @@ export const cats = [
 			disease: "None",
 		},
 		likedByUser: false,
+		adtopedByUser: false
 	},
 	{
 		name: "Milo",
@@ -72,7 +74,9 @@ export const cats = [
 			vaccination: "Done",
 			disease: "None",
 		},
+
 		likedByUser: false,
+		adtopedByUser: false
 	},
 	{
 		name: "Luna",
@@ -95,6 +99,7 @@ export const cats = [
 			disease: "None",
 		},
 		likedByUser: false,
+		adtopedByUser: false
 	},
 	{
 		name: "Cleo",
@@ -117,6 +122,7 @@ export const cats = [
 			disease: "None",
 		},
 		likedByUser: false,
+		adtopedByUser: false
 	},
 	{
 	name: "Mochi",
@@ -139,6 +145,7 @@ export const cats = [
 		disease: "None",
 	},
 	likedByUser: false,
+	adtopedByUser: false
 },
 {
 	name: "Nimbus",
@@ -161,6 +168,7 @@ export const cats = [
 		disease: "None",
 	},
 	likedByUser: false,
+	adtopedByUser: false
 }
 
 
