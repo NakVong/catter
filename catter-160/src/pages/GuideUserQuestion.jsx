@@ -28,13 +28,14 @@ const SubPage = () => {
 			if (!question) return;
 
 			try {
-				const res = await fetch("https://noggin.rea.gent/minimum-locust-8471", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization:
-							"Bearer rg_v1_3ih6mj76av5277maq2r1b7pc3192hnfa7b65_ngk",
-					},
+				const res = await fetch(
+					'https://noggin.rea.gent/operational-cockroach-5559',
+					{
+						method: 'POST',
+						headers: {
+						'Content-Type': 'application/json',
+						Authorization: 'Bearer rg_v1_xwx81mtp37d7uj736qi0510dqgt1wftu5grn_ngk',
+						},
 					body: JSON.stringify({
 						userQuestion: question,
 						catInfo: "",
