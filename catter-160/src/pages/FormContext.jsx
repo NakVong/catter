@@ -129,7 +129,7 @@ export const FormProvider = ({ children }) => {
         const userForms = prev[username] || [];
         const newSavedForms = {
           ...prev,
-          [username]: [...userForms, submission],
+          [username]: [submission],
         };
         return newSavedForms;
       });
