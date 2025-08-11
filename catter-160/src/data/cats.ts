@@ -3,6 +3,9 @@ import tigriImg from "../assets/white.jpg";
 import miloImg from "../assets/milo.jpg";
 import lunaImg from "../assets/luna.jpg";
 import cleoImg from "../assets/cleo.jpg";
+import mochiImg from "../assets/mochi.jpg";
+import nimbusImg from "../assets/nimbus.jpg";
+
 
 export const cats = [
 	{
@@ -115,4 +118,50 @@ export const cats = [
 		},
 		likedByUser: false,
 	},
+	{
+	name: "Mochi",
+	age: 0.7, // ~8 months
+	location: "San Francisco (3.2km)",
+	image: mochiImg,
+	breed: "Tabby Shorthair",
+	weight: "2.1kg",
+	color: "Brown Tabby",
+	sex: "Male",
+	spayed: "Neutered",
+	shortDescription: "⚡ Zoomies champion",
+	about:
+		"Hey, I’m Mochi! I’m basically a tiny ball of sunshine with four legs and a turbo engine. My hobbies include chasing anything that moves (or doesn’t), climbing things I’m *probably* not supposed to, and making you laugh with my acrobatics. I’m also an expert cuddler once I burn off my zoomies. If you’re looking for energy and joy rolled into one adorable package, I’m your guy.",
+	price: 90,
+	health: {
+		surgery: "None",
+		allergy: "None",
+		vaccination: "Up-to-date",
+		disease: "None",
+	},
+	likedByUser: false,
+},
+{
+	name: "Nimbus",
+	age: 6.5, // ~6 and a half years
+	location: "Portland (4.7km)",
+	image: nimbusImg,
+	breed: "British Shorthair",
+	weight: "5.9kg",
+	color: "Blue Gray",
+	sex: "Male",
+	spayed: "Neutered",
+	shortDescription: "☁️ Calm, cool, collected",
+	about:
+		"Hi, I’m Nimbus. Life’s too short to stress—so I don’t. My days are best spent lounging in sunny spots, slowly blinking at you from across the room, and enjoying quiet moments together. I’m polite, low-maintenance, and always down for a soft head scratch. If you want a steady, peaceful companion to share your home with, I’m your perfect match.",
+	price: 120,
+	health: {
+		surgery: "None",
+		allergy: "None",
+		vaccination: "Up-to-date",
+		disease: "None",
+	},
+	likedByUser: false,
+}
+
+
 ];
