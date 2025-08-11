@@ -4,6 +4,11 @@ import logo from "../assets/Catter.png";
 import paw from "../assets/catter-logo.png";
 
 const MainPage = () => {
+	const savedCats = JSON.parse(localStorage.getItem("currCats"));
+	if (savedCats) {
+		// do something with savedCats
+	}
+	console.log(savedCats[0].likedByUser);
 	return (
 		<div>
 			{/* Logo in top-left */}
