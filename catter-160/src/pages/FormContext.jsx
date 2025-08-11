@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { cats } from "../data/cats";
 
 const FormContext = createContext();
 
@@ -71,29 +72,55 @@ export const FormProvider = ({ children }) => {
     }));
   };
 
-  const saveFormData = (username) => {
+  async function saveFormData(username) {
     if (!username) {
       console.warn("Username is required to save form");
       return null;
     }
 
-    const submission = {
-      id: Date.now(),
-      timestamp: new Date().toISOString(),
-      data: { ...formData },
-    };
+    try {
+      const response = await fetch(
+        'https://noggin.rea.gent/dusty-trout-2649',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer rg_v1_k6pdg0bby33rbjsh59l3vcxsov9y604fzhax_ngk',
+          },
+          body: JSON.stringify({
+            // fill variables here.
+            "catsInfo": JSON.stringify(cats),
+            "userInfo": JSON.stringify(formData),
+          }),
+        }
+      );
 
-    setSavedForms((prev) => {
-      const userForms = prev[username] || [];
-      const newSavedForms = {
-        ...prev,
-        [username]: [...userForms, submission],
+      const json = await response.json(); // or .json() if you're expecting JSON
+
+      const submission = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        data: { ...formData },
+        catRanking: json
       };
-      return newSavedForms;
-    });
 
-    console.log(`Form saved for user "${username}":`, submission);
-    return submission.id;
+      console.log(submission)
+
+      setSavedForms((prev) => {
+        const userForms = prev[username] || [];
+        const newSavedForms = {
+          ...prev,
+          [username]: [...userForms, submission],
+        };
+        return newSavedForms;
+      });
+
+      console.log(`Form saved for user "${username}":`, submission);
+      return submission.id;
+
+    } catch (err) {
+      console.error("Error fetching response:", err);
+    }
   };
 
   const getSavedFormsByUsername = (username) => savedForms[username] || [];
