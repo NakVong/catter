@@ -2,6 +2,15 @@ import NavBar from "@/components/NavBar";
 import { useParams } from "react-router-dom";
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+	Heart,
+	X,
+	ChevronLeft,
+	CheckCircle2,
+	RotateCcw,
+	ArrowBigLeft,
+} from "lucide-react";
+
 import { Link } from "react-router-dom";
 import {
 	Carousel,
@@ -233,6 +242,10 @@ const SubPage = () => {
 					<CarouselPrevious />
 					<CarouselNext />
 				</Carousel>
+				<button className="z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white shadow-lg hover:bg-gray-100">
+					<ArrowBigLeft className="w-6 h-6 text-red-500 fill-red-500" />
+					<span className="text-gray-800 font-medium">Back</span>
+				</button>
 			</div>
 
 			<NavBar />
