@@ -166,7 +166,7 @@ export default function CatSwiperFM() {
 										/>
 									</div>
 									{/* CONTENT BELOW IMAGE */}
-									<div className="px-4 pt-2.5 pb-5">
+									<div className="px-4 pt-0.5 pb-5">
 										<div className="flex items-start justify-between gap-3">
 											<div className="flex flex-col items-start">
 												<h2 className="text-2xl font-bold tracking-tight">

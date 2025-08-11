@@ -44,7 +44,7 @@ const ProfilePage = () => {
             {/* Header */}
             <HeaderBar/>
 
-            <Card className="relative mt-12 w-[90%] max-w-md bg-pink-50 text-center p-6 rounded-3xl shadow-md">
+            <Card className="relative mt-12 w-[90%] max-w-md bg-[#FAF1F0] text-center p-6 rounded-3xl shadow-md">
                 <button
                     onClick={toggleEdit}
                     className="absolute top-2 right-2 bg-rose-200 rounded-full p-2 shadow-md flex items-center justify-center"
