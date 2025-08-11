@@ -54,6 +54,7 @@ import {
 	ToyBrick,
 	ShowerHead,
 } from "lucide-react";
+import HeaderBar from "@/components/HeaderBar";
 
 const buttonGroupStyle =
 	"flex min-h-screen flex-wrap flex-col items-center justify-center gap-8";
@@ -79,6 +80,7 @@ const GuidePage = () => {
 	}
 	return (
 		<div id="main" className="">
+			<HeaderBar/>
 			<div className={buttonGroupStyle}>
 				<div>Recommended For You!</div>
 				<Link to="/guide/q1" className={buttonStyle}>
