@@ -75,7 +75,7 @@ export const cats = [
 		name: "Luna",
 		age: 3,
 		location: "Portland (4.1km)",
-		image: lunaImg, // import this image as lunaImg
+		image: lunaImg, 
 		breed: "Turkish Angora",
 		weight: "3.6kg",
 		color: "White",
@@ -97,7 +97,7 @@ export const cats = [
 		name: "Cleo",
 		age: 4.2,
 		location: "Denver (5.0km)",
-		image: cleoImg, // import this image as cleoImg
+		image: cleoImg, 
 		breed: "Calico Longhair",
 		weight: "4.8kg",
 		color: "Calico",

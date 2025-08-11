@@ -1,7 +1,7 @@
 // CatSwiperFM.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, X, ChevronLeft, CheckCircle2 } from "lucide-react";
+import { Heart, X, ChevronLeft, CheckCircle2, RotateCcw } from "lucide-react";
 import { cats as initialCats } from "../data/cats";
 import { Card } from "@/components/ui/card";
 
@@ -54,28 +54,65 @@ const HealthCard = ({ status, label }) => {
 
 export default function CatSwiperFM() {
 	const [list, setList] = useState(initialCats);
-	const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(() => {
+    // Load from localStorage on first render
+    const saved = localStorage.getItem("catIndex");
+    return saved ? parseInt(saved, 10) : 0;
+  });
+  
+  useEffect(() => {
+    localStorage.setItem("catIndex", index);
+  }, [index]);
+  const next = () => setIndex((i) => (i + 1) % list.length);
+
+  const prevCat = () => {
+  if (index === 0) return; // at first cat, do nothing
+  setFlippedIndex(null);   // reset flip so front shows
+  setIndex((i) => (i - 1 + list.length) % list.length);
+};
+
+
+  const cat = list[index];
+  if (!cat) return null;
 	const [dir, setDir] = useState(0); // -1 left, 1 right
 	const [flippedIndex, setFlippedIndex] = useState(null);
 
-	const cat = list[index % list.length];
+
 	const isFlipped = flippedIndex === index;
 
-	const next = (d = 1) => {
-		setDir(d);
-		setIndex((i) => (i + 1) % list.length);
-		setFlippedIndex(null); // optional: reset flip on next
-	};
+
 
 	const handleDragEnd = (_e, info) => {
-		const { offset, velocity } = info;
-		const power = Math.abs(offset.x) * 0.5 + Math.abs(velocity.x);
-		const threshold = 120;
-		const swiped = power > 500 || Math.abs(offset.x) > threshold;
-		if (swiped) next(offset.x > 0 ? 1 : -1);
-	};
+  const { offset, velocity } = info;
+  const power = Math.abs(offset.x) * 0.5 + Math.abs(velocity.x);
+  const threshold = 120;
+  const swiped = power > 500 || Math.abs(offset.x) > threshold;
 
-	if (!cat) return null;
+  if (swiped) {
+    if (offset.x > 0) {
+      // ✅ Right swipe = like
+      setList(prev =>
+        prev.map((c, i) =>
+          i === index ? { ...c, likedByUser: true } : c
+	  
+        )
+      );
+      next(1);
+    } else {
+		setList(prev =>
+        prev.map((c, i) =>
+          i === index ? { ...c, likedByUser: false } : c
+	  
+        )
+      );
+      // ❌ Left swipe = skip
+      next(-1);
+    }
+  }
+};
+
+
+
 
 	////ON CLICK FLIP
 	const toggleFlip = (index) =>
@@ -85,23 +122,24 @@ export default function CatSwiperFM() {
 		<div className="w-full flex items-center justify-center py-8 select-none">
 			<div className="relative w-[360px] h-[720px]">
 				<AnimatePresence custom={dir} mode="wait">
-					<motion.div
-						key={cat.name}
-						drag="x"
-						dragElastic={0.2}
-						onDragEnd={handleDragEnd}
-						initial={{ x: dir * 40, opacity: 0 }}
-						animate={{ x: 0, opacity: 1 }}
-						exit={(custom) => ({
-							x: custom > 0 ? 480 : -480,
-							rotate: custom > 0 ? 18 : -18,
-							opacity: 0,
-							transition: { duration: 0.22 },
-						})}
-						whileDrag={{ rotate: 6 }}
-						className="absolute inset-0"
-						style={{ touchAction: "pan-y" }} // allow horizontal drag on mobile
-					>
+					
+<motion.div
+  key={cat.name}
+  drag="x"
+  dragElastic={0.2}
+  onDragEnd={handleDragEnd}
+  initial={{ opacity: 0, x: 40 }}
+  animate={{ opacity: 1, x: 0 }}
+  exit={{
+    opacity: 0,
+    x: 80, // always slides to the right as it fades
+    transition: { duration: 0.25 }
+  }}
+  whileDrag={{ scale: 1.02 }}
+  className="absolute inset-0"
+  style={{ touchAction: "pan-y" }}
+>
+	
 						{/* 🔻 Your existing card markup starts here (unchanged) */}
 						<div className="relative [perspective:1200px] h-full">
 							<div
@@ -109,33 +147,37 @@ export default function CatSwiperFM() {
 									isFlipped ? "[transform:rotateY(180deg)]" : ""
 								}`}
 							>
+								
 								<Card
 									onClick={() => toggleFlip(index)}
 									className="rounded-3xl shadow-lg w-[360px] mx-auto overflow-hidden [backface-visibility:hidden]"
 								>
+									{index > 0 && (
+    <button
+      onClick={prevCat}
+      className="absolute top-3 left-3 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+    >
+      <RotateCcw className="w-5 h-5 text-gray-700" />
+    </button>
+  )}
+  {cat.likedByUser && (
+  <button
+    className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-50"
+    aria-label="Liked"
+  >
+    <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+  </button>
+)}
 									{/* IMAGE AREA */}
 									<div className="relative h-[480px]">
 										<img
 											src={cat.image}
 											alt={`${cat.name} the cat`}
+											draggable={false}
 											className="w-full h-full object-cover object-center"
 										/>
 										{/* action buttons */}
-										<div className="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-1/2 flex items-center justify-center gap-3">
-											<button className="w-14 h-14 rounded-full bg-white shadow-lg grid place-items-center">
-												<X className="w-7 h-7 text-red-500" />
-											</button>
-											<button
-												onClick={() => toggleLike(index)}
-												className="w-14 h-14 rounded-full bg-white shadow-lg grid place-items-center"
-											>
-												{cat.likedByUser ? (
-													<Heart className="w-7 h-7 text-red-500 fill-red-500" /> // solid red
-												) : (
-													<Heart className="w-7 h-7 text-green-500" /> // green outline
-												)}
-											</button>
-										</div>
+										
 									</div>
 									{/* CONTENT BELOW IMAGE */}
 									<div className="px-4 pt-2.5 pb-5">
@@ -158,7 +200,7 @@ export default function CatSwiperFM() {
 												<span className="text-sm font-medium text-gray-700">
 													{formatAge(cat.age)}
 												</span>
-												<CheckCircle2 className="w-5 h-5 text-cyan-500" />
+												
 												<SexBadge sex={cat.sex} />
 											</div>
 										</div>
@@ -180,27 +222,32 @@ export default function CatSwiperFM() {
 									onClick={() => toggleFlip(index)}
 									className="absolute inset-0 rounded-3xl shadow-lg w-[360px] mx-auto overflow-hidden [backface-visibility:hidden] [transform:rotateY(180deg)]"
 								>
+									{index > 0 && (
+    <button
+      onClick={prevCat}
+      className="absolute top-3 left-3 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
+    >
+      <RotateCcw className="w-5 h-5 text-gray-700" />
+    </button>
+  )}
+  {cat.likedByUser && (
+  <button
+    className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/90 shadow-md flex items-center justify-center z-50"
+    aria-label="Liked"
+  >
+    <Heart className="w-6 h-6 text-red-500 fill-red-500" />
+  </button>
+)}
 									<div className="flex flex-col h-[720px] bg-white">
 										{/* Header image */}
 										<div className="relative h-[320px]">
 											<img
 												src={cat.image}
 												alt={`${cat.name} detail`}
+												draggable={false}
 												className="w-full h-full object-cover object-[50%_20%]" // was object-center
 											/>
-											<button
-												onClick={() => toggleFlip(index)}
-												className="absolute top-3 left-3 w-9 h-9 rounded-full bg-white/95 shadow grid place-items-center"
-												aria-label="Back"
-											>
-												<ChevronLeft className="w-5 h-5" />
-											</button>
-											<button
-												className="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/95 shadow grid place-items-center"
-												aria-label="Favorite"
-											>
-												<Heart className="w-5 h-5" />
-											</button>
+											
 										</div>
 
 										{/* Scrollable content */}
@@ -216,7 +263,7 @@ export default function CatSwiperFM() {
 														<span className="text-sm font-medium text-gray-700">
 															{formatAge(cat.age)}
 														</span>
-														<CheckCircle2 className="w-5 h-5 text-cyan-500" />
+														
 														<SexBadge sex={cat.sex} />
 													</div>
 												</div>
