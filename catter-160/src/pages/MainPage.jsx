@@ -6,8 +6,8 @@ const MainPage = () => {
 	return (
 		<div>
 			{/* Logo in top-left */}
-			<HeaderBar/>
-		
+			<HeaderBar />
+
 			<CatSwiper />
 			<NavBar />
 		</div>
