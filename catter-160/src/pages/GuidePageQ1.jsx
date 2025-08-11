@@ -2,6 +2,15 @@ import NavBar from "@/components/NavBar";
 import { useParams } from "react-router-dom";
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+	Heart,
+	X,
+	ChevronLeft,
+	CheckCircle2,
+	RotateCcw,
+	ArrowBigLeft,
+} from "lucide-react";
+
 import { Link } from "react-router-dom";
 import {
 	Carousel,
@@ -10,6 +19,7 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from "@/components/ui/carousel";
+import HeaderBar from "@/components/HeaderBar";
 
 const slidesQ1 = [
 	{
@@ -203,6 +213,7 @@ const SubPage = () => {
 
 	return (
 		<>
+			<HeaderBar/>
 			<div className="min-h-screen flex flex-wrap flex-col items-center justify-center gap-8">
 				<h1 className="text-2xl font-extrabold bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-transparent bg-clip-text drop-shadow-md">
 					{content.title}
@@ -233,6 +244,10 @@ const SubPage = () => {
 					<CarouselPrevious />
 					<CarouselNext />
 				</Carousel>
+				<button className="z-10 flex items-center gap-2 px-3 py-2 rounded-full bg-white shadow-lg hover:bg-gray-100">
+					<ArrowBigLeft className="w-6 h-6 text-red-500 fill-red-500" />
+					<span className="text-gray-800 font-medium">Back</span>
+				</button>
 			</div>
 
 			<NavBar />

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -54,6 +54,7 @@ import {
 	ToyBrick,
 	ShowerHead,
 } from "lucide-react";
+import HeaderBar from "@/components/HeaderBar";
 
 const buttonGroupStyle =
 	"flex min-h-screen flex-wrap flex-col items-center justify-center gap-8";
@@ -68,17 +69,18 @@ const GuidePage = () => {
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			userQuestion: "",
-			username: "nak"
+			username: ""
 		},
 	});
 
 	function onSubmit(data) {
-		const dataWithUsername = { ...data, username: "nak" };
+		const dataWithUsername = { ...data, username: localStorage.getItem('catter-username') || ""};
 		console.log("text before navigate:", dataWithUsername);
 		navigate("/guide/userquestion", { state: { data: dataWithUsername } });
 	}
 	return (
 		<div id="main" className="">
+			<HeaderBar/>
 			<div className={buttonGroupStyle}>
 				<div>Recommended For You!</div>
 				<Link to="/guide/q1" className={buttonStyle}>

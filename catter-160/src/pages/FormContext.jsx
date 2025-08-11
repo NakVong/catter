@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { cats } from "../data/cats";
 
 const FormContext = createContext();
 
@@ -22,6 +23,7 @@ export const FormProvider = ({ children }) => {
     homeType: null,
     otherPresence: null,
   });
+  
 
   // Load saved forms from localStorage on component mount
   const [savedForms, setSavedForms] = useState(() => {
@@ -33,6 +35,24 @@ export const FormProvider = ({ children }) => {
       return {};
     }
   });
+
+  // NEW: username state persisted in localStorage
+  const [username, setUsername] = useState(() => {
+    try {
+      return localStorage.getItem('catter-username') || "";
+    } catch {
+      return "";
+    }
+  });
+
+  // Save username to localStorage on change
+  useEffect(() => {
+    try {
+      localStorage.setItem('catter-username', username);
+    } catch (error) {
+      console.error('Error saving username to localStorage:', error);
+    }
+  }, [username]);
 
   // Load current form data from localStorage on component mount
   useEffect(() => {
@@ -71,29 +91,55 @@ export const FormProvider = ({ children }) => {
     }));
   };
 
-  const saveFormData = (username) => {
+  async function saveFormData(username) {
     if (!username) {
       console.warn("Username is required to save form");
       return null;
     }
 
-    const submission = {
-      id: Date.now(),
-      timestamp: new Date().toISOString(),
-      data: { ...formData },
-    };
+    try {
+      const response = await fetch(
+        'https://noggin.rea.gent/dusty-trout-2649',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer rg_v1_k6pdg0bby33rbjsh59l3vcxsov9y604fzhax_ngk',
+          },
+          body: JSON.stringify({
+            // fill variables here.
+            "catsInfo": JSON.stringify(cats),
+            "userInfo": JSON.stringify(formData),
+          }),
+        }
+      );
 
-    setSavedForms((prev) => {
-      const userForms = prev[username] || [];
-      const newSavedForms = {
-        ...prev,
-        [username]: [...userForms, submission],
+      const json = await response.json(); // or .json() if you're expecting JSON
+
+      const submission = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        data: { ...formData },
+        catRanking: json
       };
-      return newSavedForms;
-    });
 
-    console.log(`Form saved for user "${username}":`, submission);
-    return submission.id;
+      console.log(submission)
+
+      setSavedForms((prev) => {
+        const userForms = prev[username] || [];
+        const newSavedForms = {
+          ...prev,
+          [username]: [...userForms, submission],
+        };
+        return newSavedForms;
+      });
+
+      console.log(`Form saved for user "${username}":`, submission);
+      return submission.id;
+
+    } catch (err) {
+      console.error("Error fetching response:", err);
+    }
   };
 
   const getSavedFormsByUsername = (username) => savedForms[username] || [];
@@ -152,6 +198,8 @@ export const FormProvider = ({ children }) => {
         clearAllForms,
         clearCurrentForm,
         savedForms,
+        username,
+        setUsername,
       }}
     >
       {children}

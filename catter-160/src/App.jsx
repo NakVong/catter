@@ -12,8 +12,6 @@ import FormPage from "./pages/FormPage";
 import TutorialPage from './pages/TutorialPage';
 import QuestionPage from './pages/QuestionPage';
 import TestPage from './pages/TestPage';
-import { Button } from "@/components/ui/button";
-import { Mail, ArrowRight } from "lucide-react";
 import "./App.css";
 
 function App() {

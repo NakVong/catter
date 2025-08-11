@@ -1,19 +1,18 @@
 import NavBar from "@/components/NavBar";
 import CatSwiper from "./CatSwiper";
-import logo from "../assets/Catter.png";
+import HeaderBar from "@/components/HeaderBar";
 
 const MainPage = () => {
+	const savedCats = JSON.parse(localStorage.getItem("currCats"));
+	if (savedCats) {
+		// do something with savedCats
+	}
+	console.log(savedCats[0].likedByUser);
 	return (
 		<div>
 			{/* Logo in top-left */}
-			<div className="p-4">
-				<img
-					src={logo}
-					alt="Catter Logo"
-					className="h-12 w-auto object-contain"
-				/>
-			</div>
-
+			<HeaderBar/>
+		
 			<CatSwiper />
 			<NavBar />
 		</div>

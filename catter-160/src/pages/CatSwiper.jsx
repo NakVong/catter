@@ -2,8 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, X, ChevronLeft, CheckCircle2, RotateCcw } from "lucide-react";
-import { cats as initialCats } from "../data/cats";
+import { cats, cats as initialCats } from "../data/cats";
 import { Card } from "@/components/ui/card";
+import fs from "fs/promises";
+import path from "path";
 
 function addChatToStorage(name) {
   try {
@@ -75,16 +77,20 @@ const HealthCard = ({ status, label }) => {
 //MAIN EXPORT FUNCTION
 
 export default function CatSwiperFM() {
-	const [list, setList] = useState(initialCats);
+	const [list, setList] = useState(() => {
+		const savedCats = localStorage.getItem("currCats");
+		return savedCats ? JSON.parse(savedCats) : initialCats;
+	});
+
 	const [index, setIndex] = useState(() => {
-		// Load from localStorage on first render
-		const saved = localStorage.getItem("catIndex");
-		return saved ? parseInt(saved, 10) : 0;
+		const savedIndex = localStorage.getItem("catIndex");
+		return savedIndex ? parseInt(savedIndex, 10) : 0;
 	});
 
 	useEffect(() => {
+		localStorage.setItem("currCats", JSON.stringify(list));
 		localStorage.setItem("catIndex", index);
-	}, [index]);
+	}, [index, list]);
 	const next = () => setIndex((i) => (i + 1) % list.length);
 
 	const prevCat = () => {
@@ -131,7 +137,7 @@ export default function CatSwiperFM() {
 		setFlippedIndex((cur) => (cur === index ? null : index));
 
 	return (
-		<div className="w-full flex items-center justify-center py-8 select-none">
+		<div className="w-full flex items-center justify-center py-8 select-none mt-6">
 			<div className="relative w-[360px] h-[720px]">
 				<AnimatePresence custom={dir} mode="wait">
 					<motion.div

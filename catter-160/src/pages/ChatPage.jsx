@@ -4,7 +4,10 @@ import { BookText, House, MessageSquare, User, ChevronDown, ChevronUp } from "lu
 import paw from "../assets/catter-logo.png";
 import { cats as CATS } from "../data/cats";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+
 import profile from "../assets/cat.jpg";
+import HeaderBar from "@/components/HeaderBar";
+import NavBar from "@/components/NavBar";
 
 
 const FIVE_MIN = 5 * 60 * 1000;
@@ -153,8 +156,7 @@ export default function ChatPage() {
   };
 
   return (
-    <>
-      {/* Header (profile button restored) */}
+    <>      {/* Header (profile button restored) */}
       <div className="flex justify-between items-center px-4 py-4">
         <div className="flex items-center space-x-2">
           <img src={paw} alt="paw" className="h-20 w-auto mt-2 -ml-6" />
@@ -273,6 +275,7 @@ export default function ChatPage() {
           </span>
         </Link>
       </div>
+
 
     </>
   );
