@@ -95,12 +95,12 @@ export default function CatSwiper() {
 		};
 
 		const onScrollEnd = () => {
-			if (!userDragged) return; // 只在“用户拖动”后触发
+			if (!userDragged) return;
 			userDragged = false;
 
 			const total = api.scrollSnapList().length;
 			const next = (api.selectedScrollSnap() + 1) % total;
-			api.scrollTo(next); // 不管左/右，统一跳到下一个
+			api.scrollTo(next);
 		};
 
 		api.on("pointerDown", onPointerDown);
