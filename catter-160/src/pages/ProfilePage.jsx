@@ -7,18 +7,18 @@ import cat from "../assets/cat.jpg";
 
 const ProfilePage = () => {
     const [editMode, setEditMode] = useState(false);
-    const [image, setImage] = useState(cat);
+    const [image, setImage] = useState("");
 
     const [catDetails, setCatDetails] = useState({
-        name: "Nono",
+        name: "",
         years: 0,
-        months: 2,
-        breed: "Tabby",
-        weight: 2.4,
-        weightUnit: "kg",
-        color: "Orange",
-        sex: "Male",
-        spayed: "Yes",
+        months: 0,
+        breed: "",
+        weight: 0,
+        weightUnit: "",
+        color: "",
+        sex: "",
+        spayed: "",
     });
 
     const handleChange = (e) => {

@@ -16,9 +16,21 @@ const TutorialPage = () => {
                                     <CardContent className="flex aspect-square items-center justify-center p-6">
                                         {index === 0 ? (
                                             <div>
-                                                <img src={catTutorial} className="rounded-3xl pb-6" alt="Tutorial" />
-                                                <p className="text-xl text-[#5F5B5B] pb-3">Find your new friends</p>
-                                                <p className="text-l text-[#ADA8A8]">Make your life more colorful</p>
+                                                <img src={catTutorial} className="pb-6" alt="Tutorial" />
+                                                <p className="text-xl text-[#5F5B5B] pb-3">Find your new furry friends</p>
+                                                <p className="text-l text-[#ADA8A8]">Make your life more colorful!</p>
+                                            </div>
+                                        ) : index === 1 ? (
+                                            <div>
+                                                <div className="text-6xl pb-6">👆</div>
+                                                <p className="text-xl text-[#5F5B5B] pb-3">Swipe to choose</p>
+                                                <p className="text-l text-[#ADA8A8]">Swipe right to save the cat, swipe left to reject</p>
+                                            </div>
+                                        ) : index === 2 ? (
+                                            <div>
+                                                <div className="text-6xl pb-6">📖</div>
+                                                <p className="text-xl text-[#5F5B5B] pb-3">Get personalized guides</p>
+                                                <p className="text-l text-[#ADA8A8]">Quickly access 5 common guides and generate your own!</p>
                                             </div>
                                         ) : (
                                             <div className="text-gray-400 italic">Coming soon...</div>
@@ -40,4 +52,4 @@ const TutorialPage = () => {
     );
 };
 
-export default TutorialPage
+export default TutorialPage;
