@@ -17,7 +17,7 @@ const NavBar = () => {
                 Chat
                 <span className="absolute top-0 right-2 bg-red-500 text-white text-xs rounded-full px-1">4</span>
             </Link>
-            <Link to="/profile" className="text-purple-500 flex flex-col items-center text-xs">
+            <Link to="/profile" className="text-rose-500 flex flex-col items-center text-xs">
                 <User />
                 Profile
             </Link>
