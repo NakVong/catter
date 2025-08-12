@@ -188,7 +188,7 @@ const ProfilePage = () => {
                                         onChange={handleChange}
                                         className="border rounded px-2 py-1"
                                     >   
-                                        <option value="">Select</option>
+                                        <option value="">Weight unit</option>
                                         <option value="kg">kg</option>
                                         <option value="lbs">lbs</option>
                                     </select>
@@ -211,7 +211,7 @@ const ProfilePage = () => {
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
                                 >
-                                    <option value="">Select</option>
+                                    <option value="">Sex</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
                                 </select>
@@ -223,7 +223,7 @@ const ProfilePage = () => {
                                     onChange={handleChange}
                                     className="border rounded px-2 py-1 w-full"
                                 >
-                                    <option value="">Select</option>
+                                    <option value="">Spayed</option>
                                     <option value="Yes">Yes</option>
                                     <option value="No">No</option>
                                 </select>
