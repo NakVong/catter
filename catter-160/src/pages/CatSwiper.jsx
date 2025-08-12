@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, X, ChevronLeft, CheckCircle2, RotateCcw } from "lucide-react";
-import { cats, cats as initialCats } from "../data/cats";
+import { cats as initialCats } from "../data/cats";
 import { useFormContext } from "./FormContext";
 import { Card } from "@/components/ui/card";
 import fs from "fs/promises";
@@ -108,7 +108,9 @@ export default function CatSwiperFM() {
 		return cats.filter((cat) => cat !== undefined);
 	}
 
-	const list2 = removeUndefinedCats(sortCatsByRanking(list, catsRanking));
+	const list2 = removeUndefinedCats(
+		sortCatsByRanking(initialCats, catsRanking),
+	);
 
 	list2.forEach((cat) => {
 		console.log(cat);
