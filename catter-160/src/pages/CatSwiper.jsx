@@ -26,7 +26,7 @@ function addChatToStorage(name) {
 			window.dispatchEvent(new Event("catter:chatsChanged"));
 		}
 	} catch (e) {
-		console.error("Failed to add chat to storage", e);
+		//console.error("Failed to add chat to storage", e);
 	}
 }
 
@@ -113,11 +113,11 @@ export default function CatSwiperFM() {
 	);
 
 	list2.forEach((cat) => {
-		console.log(cat);
+		//console.log(cat);
 		cat.likedByUser = false;
 	});
 
-	console.log(list2);
+	//console.log(list2);
 
 	const [index, setIndex] = useState(() => {
 		const savedIndex = localStorage.getItem("catIndex");
@@ -128,6 +128,7 @@ export default function CatSwiperFM() {
 		localStorage.setItem("currCats", JSON.stringify(list2));
 		localStorage.setItem("catIndex", index);
 	}, [index, list2]);
+
 	const next = () => setIndex((i) => (i + 1) % list2.length);
 
 	const prevCat = () => {
@@ -137,6 +138,7 @@ export default function CatSwiperFM() {
 	};
 
 	const cat = list2[index];
+	//console.log(cat);
 	if (!cat) return null;
 	const [dir, setDir] = useState(0); // -1 left, 1 right
 	const [flippedIndex, setFlippedIndex] = useState(null);
@@ -146,28 +148,31 @@ export default function CatSwiperFM() {
 	const handleDragEnd = (_e, info) => {
 		const { offset, velocity } = info;
 		const power = Math.abs(offset.x) * 0.5 + Math.abs(velocity.x);
-		const threshold = 40;
+		const threshold = 20;
 		const swiped = power > 500 || Math.abs(offset.x) > threshold;
 
 		if (swiped) {
 			if (offset.x > 0) {
 				// Right swipe = like
-setList((prev) => prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)));
+				setList((prev) =>
+					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
+				);
 
-// enqueue in a session queue (so multiple likes are kept)
-const key = "catter_swipe_queue";
-const q = JSON.parse(sessionStorage.getItem(key) || "[]");
-q.push({ name: cat.name, ts: Date.now() });
-sessionStorage.setItem(key, JSON.stringify(q));
+				// enqueue in a session queue (so multiple likes are kept)
+				const key = "catter_swipe_queue";
+				const q = JSON.parse(sessionStorage.getItem(key) || "[]");
+				q.push({ name: cat.name, ts: Date.now() });
+				sessionStorage.setItem(key, JSON.stringify(q));
 
-// also notify any mounted Chats page immediately
-window.dispatchEvent(new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }));
+				// also notify any mounted Chats page immediately
+				window.dispatchEvent(
+					new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }),
+				);
 
-next(1);
+				next(1);
 
- // or use prevCat() if you want to move backward on left swipe
-				}
-
+				// or use prevCat() if you want to move backward on left swipe
+			}
 		}
 	};
 
