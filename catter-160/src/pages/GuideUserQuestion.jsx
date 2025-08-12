@@ -19,7 +19,10 @@ const SubPage = () => {
 
 	const userForms = selectedUser ? savedForms[selectedUser] || [] : [];
   	const latestUserInfo = userForms.length > 0 ? userForms[userForms.length - 1].data : formData;
+	const latestCatInfo = userForms.length > 0 ? userForms[userForms.length - 1].catInfo : formData;
+
 	console.log(JSON.stringify(latestUserInfo))
+	console.log(JSON.stringify(latestCatInfo))
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -39,7 +42,7 @@ const SubPage = () => {
 						},
 					body: JSON.stringify({
 						userQuestion: question,
-						catInfo: "",
+						catInfo: JSON.stringify(latestCatInfo),
 						userInfo: JSON.stringify(latestUserInfo),
 					}),
 				});
@@ -56,15 +59,13 @@ const SubPage = () => {
 		fetchData();
 	}, [question]);
 
-	const username = localStorage.getItem('catter-username') || "";
-
 	return (
 		<>
 			<HeaderBar/>
 			<div className="max-w-xl mx-auto p-6 bg-white min-h-screen rounded-xl shadow-md  border border-gray-200 mt-12">
 				<div>
 					<h2 className="text-lg font-semibold text-gray-800 mb-1">
-						{username} question:
+						{selectedUser} question:
 					</h2>
 					<p className="text-gray-600 italic">{question}</p>
 				</div>
