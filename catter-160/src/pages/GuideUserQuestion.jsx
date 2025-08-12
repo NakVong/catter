@@ -16,8 +16,8 @@ const SubPage = () => {
 
 	const [response, setResponse] = useState(null);
 
-	const { formData, savedForms } = useFormContext();
-
+	const saved = localStorage.getItem("catter-saved-forms");
+	const savedForms = saved ? JSON.parse(saved) : {};
 	const userForms = selectedUser ? savedForms[selectedUser] || [] : [];
   	const latestUserInfo = userForms.length > 0 ? userForms[userForms.length - 1].data : formData;
 	const latestCatInfo = userForms.length > 0 ? userForms[userForms.length - 1].catInfo : formData;
