@@ -13,6 +13,7 @@ const SubPage = () => {
 	console.log(location.state?.data.userQuestion);
 	const question = location.state?.data.userQuestion;
 	const selectedUser = location.state?.data.username;
+
 	const [response, setResponse] = useState(null);
 
 	const { formData, savedForms } = useFormContext();
@@ -33,12 +34,13 @@ const SubPage = () => {
 
 			try {
 				const res = await fetch(
-					'https://noggin.rea.gent/operational-cockroach-5559',
+					"https://noggin.rea.gent/operational-cockroach-5559",
 					{
-						method: 'POST',
+						method: "POST",
 						headers: {
-						'Content-Type': 'application/json',
-						Authorization: 'Bearer rg_v1_xwx81mtp37d7uj736qi0510dqgt1wftu5grn_ngk',
+							"Content-Type": "application/json",
+							Authorization:
+								"Bearer rg_v1_xwx81mtp37d7uj736qi0510dqgt1wftu5grn_ngk",
 						},
 					body: JSON.stringify({
 						userQuestion: question,
@@ -61,7 +63,7 @@ const SubPage = () => {
 
 	return (
 		<>
-			<HeaderBar/>
+			<HeaderBar />
 			<div className="max-w-xl mx-auto p-6 bg-white min-h-screen rounded-xl shadow-md  border border-gray-200 mt-12">
 				<div>
 					<h2 className="text-lg font-semibold text-gray-800 mb-1">
