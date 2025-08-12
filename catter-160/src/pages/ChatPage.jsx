@@ -6,20 +6,28 @@ import HeaderBar from "@/components/HeaderBar";
 import NavBar from "@/components/NavBar";
 import { cats as CATS } from "../data/cats";
 
-/* === CONFIG: 30 seconds until a chat moves to Past === */
-const CHAT_EXPIRY_MS = 30 * 1000;
-/* === STORAGE KEY bump so you start from 0 (ignores old saved chats) === */
-const STORAGE_KEY = "catter_chats_v2";
+/* === CONFIG: 10 seconds to move to Past === */
+const CHAT_EXPIRY_MS = 10 * 1000;
+
+/* Session persistence (survives route changes; clears when tab closes) */
+const SESSION_KEY = "catter_session_chats_v1";
+
+/* Likes queue used by the swiper to buffer likes before Chats mounts */
+const SWIPE_QUEUE_KEY = "catter_swipe_queue";
 
 /* Helpers */
 const catsByName = Object.fromEntries(CATS.map((c) => [c.name, c]));
 const loadChats = () => {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]"); }
-  catch { return []; }
+  try {
+    return JSON.parse(sessionStorage.getItem(SESSION_KEY) || "[]");
+  } catch {
+    return [];
+  }
 };
-const saveChats = (chats) => localStorage.setItem(STORAGE_KEY, JSON.stringify(chats));
+const saveChats = (chats) =>
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(chats));
 
-/* Chat row */
+/* UI row */
 const ChatCard = ({
   catName,
   lastMessage,
@@ -74,7 +82,6 @@ const ChatCard = ({
   );
 };
 
-/* Profile tab */
 const ProfileTab = ({ name }) => {
   const c = catsByName[name] || {};
   return (
@@ -96,10 +103,22 @@ const ProfileTab = ({ name }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-3 text-sm">
-        <div className="border rounded-lg p-3"><div className="text-gray-500">Breed</div><div className="font-medium">{c.breed || "—"}</div></div>
-        <div className="border rounded-lg p-3"><div className="text-gray-500">Age</div><div className="font-medium">{c.age != null ? `${c.age} yrs` : "—"}</div></div>
-        <div className="border rounded-lg p-3"><div className="text-gray-500">Color</div><div className="font-medium">{c.color || "—"}</div></div>
-        <div className="border rounded-lg p-3"><div className="text-gray-500">Weight</div><div className="font-medium">{c.weight || "—"}</div></div>
+        <div className="border rounded-lg p-3">
+          <div className="text-gray-500">Breed</div>
+          <div className="font-medium">{c.breed || "—"}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-gray-500">Age</div>
+          <div className="font-medium">{c.age != null ? `${c.age} yrs` : "—"}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-gray-500">Color</div>
+          <div className="font-medium">{c.color || "—"}</div>
+        </div>
+        <div className="border rounded-lg p-3">
+          <div className="text-gray-500">Weight</div>
+          <div className="font-medium">{c.weight || "—"}</div>
+        </div>
       </div>
     </div>
   );
@@ -107,9 +126,8 @@ const ProfileTab = ({ name }) => {
 
 const ChatPage = () => {
   // Collapsibles
-  const [showActive, setShowActive] = useState(true); // open Active by default
+  const [showActive, setShowActive] = useState(true);
   const [showAll, setShowAll] = useState(false);
-  const [showFavorites, setShowFavorites] = useState(false); // we’re not using Favorites
 
   // Drawer state
   const [selectedChat, setSelectedChat] = useState(null);
@@ -117,68 +135,110 @@ const ChatPage = () => {
   const [draft, setDraft] = useState("");
   const messagesEndRef = useRef(null);
 
-  // Selection mode (kept)
+  // Selection mode & success
   const [selectMode, setSelectMode] = useState(false);
   const [selectedCats, setSelectedCats] = useState({});
   const [successPage, setSuccessPage] = useState(false);
 
-  // Source of truth (starts EMPTY thanks to v2 key)
+  // In-session chats (persisted in sessionStorage)
+  // { id, name, createdAt, lastMessageAt, status: 'active'|'past', messages: [] }
   const [chats, setChats] = useState(() => loadChats());
 
-  // Persist
+  // Persist to sessionStorage whenever chats change
   useEffect(() => saveChats(chats), [chats]);
 
-  // Re-evaluate Active vs Past every 1s so 30s feels snappy
+  /* Helper to add or promote a single name */
+  const addOrPromote = (prev, name, ts = Date.now()) => {
+    const i = prev.findIndex((c) => c.name === name);
+    if (i >= 0) {
+      const copy = [...prev];
+      copy[i] = { ...copy[i], status: "active" };
+      return copy;
+    }
+    return [
+      {
+        id: crypto.randomUUID(),
+        name,
+        createdAt: ts,
+        lastMessageAt: null,
+        status: "active",
+        messages: [],
+      },
+      ...prev,
+    ];
+  };
+
+  /* Demote to Past after 10s of inactivity */
   useEffect(() => {
-    const t = setInterval(() => setChats((p) => [...p]), 1000);
+    const t = setInterval(() => {
+      const now = Date.now();
+      setChats((prev) => {
+        let changed = false;
+        const next = prev.map((c) => {
+          const last = c.lastMessageAt ?? c.createdAt;
+          const shouldActive = now - last <= CHAT_EXPIRY_MS;
+          if ((c.status === "active") !== shouldActive) {
+            changed = true;
+            return { ...c, status: shouldActive ? "active" : "past" };
+          }
+          return c;
+        });
+        return changed ? next : prev;
+      });
+    }, 1000);
     return () => clearInterval(t);
   }, []);
 
-  // Listen for swipe-right + external changes
+  /* Import likes done before opening/returning to Chats */
+  const seedFromQueue = () => {
+    try {
+      const raw = sessionStorage.getItem(SWIPE_QUEUE_KEY);
+      if (!raw) return;
+      const q = JSON.parse(raw); // [{name, ts}, ...]
+      if (!Array.isArray(q) || q.length === 0) return;
+
+      setChats((prev) => {
+        let res = prev;
+        q.forEach(({ name, ts }) => {
+          if (name) res = addOrPromote(res, name, ts || Date.now());
+        });
+        return res;
+      });
+
+      sessionStorage.removeItem(SWIPE_QUEUE_KEY); // consumed
+    } catch {}
+  };
+
+  useEffect(() => {
+    seedFromQueue(); // on mount
+    const onVisible = () =>
+      document.visibilityState === "visible" && seedFromQueue();
+    document.addEventListener("visibilitychange", onVisible);
+    window.addEventListener("focus", seedFromQueue);
+    return () => {
+      document.removeEventListener("visibilitychange", onVisible);
+      window.removeEventListener("focus", seedFromQueue);
+    };
+  }, []);
+
+  /* Live: add a like immediately when Chats is mounted */
   useEffect(() => {
     const onSwipeRight = (e) => {
       const name = e.detail?.name;
       if (!name) return;
-      setChats((prev) => {
-        if (prev.some((c) => c.name === name)) return prev;
-        const next = [{ id: crypto.randomUUID(), name, createdAt: Date.now(), lastMessageAt: null, messages: [] }, ...prev];
-        saveChats(next);
-        return next;
-      });
+      setChats((prev) => addOrPromote(prev, name));
     };
-    const onStorage = (e) => {
-      if (e.key === STORAGE_KEY) setChats(loadChats());
-    };
-    const onLocalEvent = () => setChats(loadChats());
-
     window.addEventListener("catter:swipeRight", onSwipeRight);
-    window.addEventListener("storage", onStorage);
-    window.addEventListener("catter:chatsChanged", onLocalEvent);
-    return () => {
-      window.removeEventListener("catter:swipeRight", onSwipeRight);
-      window.removeEventListener("storage", onStorage);
-      window.removeEventListener("catter:chatsChanged", onLocalEvent);
-    };
+    return () => window.removeEventListener("catter:swipeRight", onSwipeRight);
   }, []);
 
-  // Derive sections:
-  // - ACTIVE = chats created or messaged within 30s
-  // - PAST   = older than 30s since last user message (or since creation if none)
-  const now = Date.now();
-  const { activeChats, past } = useMemo(() => {
-    const a = [];
-    const p = [];
-    for (const c of chats) {
-      const last = c.lastMessageAt ?? c.createdAt;
-      (now - last <= CHAT_EXPIRY_MS ? a : p).push(c);
-    }
-    return { activeChats: a, past: p };
-  }, [chats, now]);
+  /* Sections from explicit status */
+  const activeChats = useMemo(() => chats.filter((c) => c.status === "active"), [chats]);
+  const past = useMemo(() => chats.filter((c) => c.status === "past"), [chats]);
 
-  // current chat
+  // Current chat
   const current = chats.find((c) => c.name === selectedChat);
   const currentMsgs = current?.messages || [];
-
   useEffect(() => {
     if (!selectedChat) return;
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -198,134 +258,140 @@ const ChatPage = () => {
     setChats((prev) =>
       prev.map((c) =>
         c.id === current.id
-          ? { ...c, lastMessageAt: ts, messages: [...c.messages, { from: "me", text, ts }] }
+          ? {
+              ...c,
+              lastMessageAt: ts,
+              status: "active", // promote on message
+              messages: [...c.messages, { from: "me", text, ts }],
+            }
           : c
       )
     );
     setDraft("");
   };
 
-  // Selection UI (kept)
-  const toggleCheck = (cat) => setSelectedCats((prev) => ({ ...prev, [cat]: !prev[cat] }));
-  const exitSelectMode = () => { setSelectMode(false); setSelectedCats({}); };
-  const handleDone = () => { setSuccessPage(true); setSelectMode(false); };
+  /* Adopt flow */
+  const adoptableNames = useMemo(() => chats.map((c) => c.name), [chats]);
+  const selectedCount = useMemo(
+    () => Object.values(selectedCats).filter(Boolean).length,
+    [selectedCats]
+  );
+  const toggleCheck = (cat) => setSelectedCats((p) => ({ ...p, [cat]: !p[cat] }));
+  const exitSelectMode = () => {
+    setSelectMode(false);
+    setSelectedCats({});
+  };
+  const handleDone = () => {
+    if (selectedCount === 0) return;
+    setSuccessPage(true);
+    setSelectMode(false);
+    setSelectedCats({});
+  };
   useEffect(() => {
     if (!successPage) return;
-    const t = setTimeout(() => { setSuccessPage(false); setSelectedCats({}); }, 1500);
+    const t = setTimeout(() => setSuccessPage(false), 1200);
     return () => clearTimeout(t);
   }, [successPage]);
-
-  // Names list for selection mode (from both sections)
-  const allCats = useMemo(
-    () => [...activeChats.map((c) => c.name), ...past.map((c) => c.name)],
-    [activeChats, past]
-  );
 
   return (
     <>
       <HeaderBar />
 
-      {/* Back button on chat subpage */}
-      {selectedChat && !successPage && !selectMode && (
-        <div className="px-4 pt-2">
-          <button
-            onClick={() => setSelectedChat(null)}
-            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-medium"
-            aria-label="Back to Chats"
-          >
-            <ArrowLeft size={20} />
-            <span>Back</span>
-          </button>
-        </div>
-      )}
-
-      {/* Chat SUBPAGE */}
+      {/* CHAT SUBPAGE */}
       {selectedChat && !successPage && !selectMode ? (
         <>
-        <div className="flex items-center gap-2 p-4 border-b">
-  <button
-    onClick={() => setSelectedChat(null)}
-    className="flex items-center gap-1 text-black hover:text-gray-700"
-  >
-    <ArrowLeft size={20} />
-    <span>Back</span>
-  </button>
-  <h2 className="font-semibold">{selectedChat?.name}</h2>
-</div>
+          <div className="sticky z-30 bg-white" style={{ top: "64px" }}>
+            <div className="relative px-4 py-3 border-b">
+              <button
+                onClick={() => setSelectedChat(null)}
+                className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-1 text-black hover:text-gray-700"
+                aria-label="Back to Chats"
+              >
+                <ArrowLeft size={20} />
+                <span>Back</span>
+              </button>
+              <h2 className="text-center text-3xl font-bold">{selectedChat}</h2>
+            </div>
 
-          <div className="mt-2 text-3xl font-bold text-center">{selectedChat}</div>
-
-          <div className="flex w-full border-b border-gray-300 mt-4">
-            <button
-              onClick={() => setActiveTab("chat")}
-              className={`w-1/2 pb-2 text-center font-medium ${
-                activeTab === "chat" ? "text-black border-b-2 border-black" : "text-gray-400 border-b-2 border-transparent"
-              }`}
-            >
-              Chat
-            </button>
-            <button
-              onClick={() => setActiveTab("profile")}
-              className={`w-1/2 pb-2 text-center font-medium ${
-                activeTab === "profile" ? "text-black border-b-2 border-black" : "text-gray-400 border-b-2 border-transparent"
-              }`}
-            >
-              Profile
-            </button>
+            <div className="flex h-11 bg-white border-b">
+              <button
+                onClick={() => setActiveTab("chat")}
+                className={`flex-1 text-center font-medium relative ${
+                  activeTab === "chat" ? "text-black" : "text-gray-400"
+                }`}
+              >
+                Chat
+                {activeTab === "chat" && (
+                  <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] bg-black block" />
+                )}
+              </button>
+              <button
+                onClick={() => setActiveTab("profile")}
+                className={`flex-1 text-center font-medium relative ${
+                  activeTab === "profile" ? "text-black" : "text-gray-400"
+                }`}
+              >
+                Profile
+                {activeTab === "profile" && (
+                  <span className="absolute left-0 right-0 -bottom-[1px] h-[2px] bg-black block" />
+                )}
+              </button>
+            </div>
           </div>
 
           {activeTab === "chat" ? (
-            <>
-              <div className="px-4 mt-4 pb-36">
-                <div className="flex flex-col space-y-2">
-                  {currentMsgs.map((m, idx) => (
-                    <div
-                      key={idx}
-                      className={`max-w-[75%] rounded-2xl px-4 py-2 ${
-                        m.from === "me" ? "self-end bg-purple-600 text-white" : "self-start bg-gray-200 text-gray-900"
-                      }`}
-                    >
-                      {m.text}
-                    </div>
-                  ))}
-                  <div ref={messagesEndRef} />
-                </div>
+            <div className="px-4 pt-24 pb-36">
+              <div className="flex flex-col space-y-2">
+                {currentMsgs.map((m, idx) => (
+                  <div
+                    key={idx}
+                    className={`max-w-[75%] rounded-2xl px-4 py-2 ${
+                      m.from === "me"
+                        ? "self-end bg-purple-600 text-white"
+                        : "self-start bg-gray-200 text-gray-900"
+                    }`}
+                  >
+                    {m.text}
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
-
-              <div className="fixed bottom-16 left-0 w-full bg-white border-t px-3 py-3">
-                <div className="flex items-center gap-2">
-                  <input
-                    value={draft}
-                    onChange={(e) => setDraft(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                    className="flex-1 border rounded-full px-4 py-2 outline-none"
-                    placeholder="Type a message"
-                  />
-                  <button onClick={sendMessage} className="px-4 py-2 rounded-full bg-purple-600 text-white font-medium">
-                    Send
-                  </button>
-                </div>
-              </div>
-            </>
+            </div>
           ) : (
-            <div className="pb-24">
+            <div className="pt-6 pb-24">
               <ProfileTab name={selectedChat} />
             </div>
           )}
+
+          <div className="fixed bottom-16 left-0 w-full bg-white border-t px-3 py-3">
+            <div className="flex items-center gap-2">
+              <input
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                className="flex-1 border rounded-full px-4 py-2 outline-none"
+                placeholder="Type a message"
+              />
+              <button
+                onClick={sendMessage}
+                className="px-4 py-2 rounded-full bg-purple-600 text-white font-medium"
+              >
+                Send
+              </button>
+            </div>
+          </div>
         </>
       ) : successPage ? (
-        /* Success page (kept) */
         <div className="text-center text-xl mt-20 text-gray-600 pb-24">
           <div className="text-3xl font-semibold mb-3">Success ✅</div>
           <div>Your adoption request has been submitted.</div>
         </div>
       ) : (
-        /* LISTS */
         <div className="px-15 mt-9 pb-24">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-5xl font-sami-bold text-left">Chats</h2>
             <button
-              onClick={() => (selectMode ? setSelectMode(false) : setSelectMode(true))}
+              onClick={() => (selectMode ? exitSelectMode() : setSelectMode(true))}
               className={`px-4 py-2 rounded-lg text-sm font-medium border ${
                 selectMode ? "bg-gray-700 text-white border-gray-700" : "bg-gray-200 text-gray-800 border-gray-300"
               }`}
@@ -335,45 +401,38 @@ const ChatPage = () => {
           </div>
 
           {selectMode ? (
-            <div className="space-y-3">
-              {allCats.map((cat) => (
-                <ChatCard
-                  key={cat}
-                  catName={cat}
-                  lastMessage="last message"
-                  ownerName="owner's name"
-                  address="address"
-                  selectionMode
-                  checked={!!selectedCats[cat]}
-                  onCheckToggle={(name) =>
-                    setSelectedCats((prev) => ({ ...prev, [name]: !prev[name] }))
-                  }
-                />
-              ))}
+            <>
+              {adoptableNames.length === 0 ? (
+                <div className="text-gray-500 px-4">No chats yet. Swipe right on a cat first.</div>
+              ) : (
+                <div className="space-y-3">
+                  {adoptableNames.map((cat) => (
+                    <ChatCard
+                      key={cat}
+                      catName={cat}
+                      lastMessage=""
+                      ownerName="owner's name"
+                      address={catsByName[cat]?.location}
+                      selectionMode
+                      checked={!!selectedCats[cat]}
+                      onCheckToggle={toggleCheck}
+                    />
+                  ))}
+                </div>
+              )}
               <div className="mt-6 flex justify-center">
-                <button onClick={() => { setSuccessPage(true); setSelectMode(false); }} className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold">
+                <button
+                  onClick={handleDone}
+                  className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-semibold disabled:opacity-60"
+                  disabled={selectedCount === 0}
+                >
                   Done
                 </button>
               </div>
-            </div>
+            </>
           ) : (
             <div className="space-y-4">
-              {/* Favorites (remove) */}
-          {false && (
-            <div className="border-b pb-3">
-              <div
-                className="flex justify-between items-center cursor-pointer pl-10"
-                onClick={() => setShowFavorites(!setShowFavorites)}
-              >
-                <p className="text-lg font-regular text-left">Favorites (0)</p>
-                {showFavorites ? <ChevronUp size={25} /> : <ChevronDown size={25} />}
-              </div>
-              {showFavorites && <div className="mt-3 ml-20 text-gray-500">No favorites.</div>}
-            </div>
-          )}
-
-
-              {/* Active chats (NEW: fresh chats live here) */}
+              {/* Active chats */}
               <div className="border-b pb-3">
                 <div
                   className="flex justify-between items-center cursor-pointer pl-10"
