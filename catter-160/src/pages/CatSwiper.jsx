@@ -104,10 +104,14 @@ export default function CatSwiperFM() {
 		const savedCats = localStorage.getItem("currCats");
 		return savedCats ? JSON.parse(savedCats) : initialCats;
 	});
+	function removeUndefinedCats(cats) {
+		return cats.filter((cat) => cat !== undefined);
+	}
 
-	const list2 = sortCatsByRanking(list, catsRanking);
+	const list2 = removeUndefinedCats(sortCatsByRanking(list, catsRanking));
 
 	list2.forEach((cat) => {
+		console.log(cat);
 		cat.likedByUser = false;
 	});
 
