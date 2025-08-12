@@ -8,6 +8,10 @@ import { Card } from "@/components/ui/card";
 import fs from "fs/promises";
 import path from "path";
 
+const STORAGE_KEY = "currCats";
+const STORAGE_VER_KEY = "currCats_version";
+const DATA_VERSION = "2025-08-11-opal-done"; // bump this whenever you change cats.jsx
+
 //HELPERS
 function addChatToStorage(name) {
 	try {
@@ -75,7 +79,6 @@ const HealthCard = ({ status, label }) => {
 };
 
 //MAIN EXPORT FUNCTION
-
 export default function CatSwiperFM() {
 	const username = localStorage.getItem("catter-username") || "";
 	const { formData, savedForms } = useFormContext();
@@ -170,8 +173,12 @@ export default function CatSwiperFM() {
 				);
 
 				next(1);
-
-				// or use prevCat() if you want to move backward on left swipe
+			} else {
+				setList((prev) =>
+					prev.map((c, i) => (i === index ? { ...c, likedByUser: false } : c)),
+				);
+				// ❌ Left swipe = skip
+				next(-1);
 			}
 		}
 	};

@@ -142,7 +142,7 @@ export const cats = [
     health: {
       surgery: "None",
       allergy: "None",
-      vaccination: "Up-to-date",
+      vaccination: "Done",
       disease: "None",
     },
     likedByUser: false,
@@ -165,7 +165,7 @@ export const cats = [
     health: {
       surgery: "None",
       allergy: "None",
-      vaccination: "Up-to-date",
+      vaccination: "Done",
       disease: "None",
     },
     likedByUser: false,
@@ -188,7 +188,7 @@ export const cats = [
     health: {
       surgery: "None",
       allergy: "None",
-      vaccination: "Up-to-date",
+      vaccination: "Done",
       disease: "None",
     },
     likedByUser: false,
@@ -234,7 +234,7 @@ export const cats = [
     health: {
       surgery: "None",
       allergy: "None",
-      vaccination: "Up-to-date",
+      vaccination: "Done",
       disease: "None",
     },
     likedByUser: false,
