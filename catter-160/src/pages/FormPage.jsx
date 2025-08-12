@@ -26,6 +26,8 @@ const FormPage = () => {
 
 		setUsername(username);
 
+		localStorage.setItem("catIndex", 0);
+
 		const submitButton = document.querySelector(".submit-button");
 		submitButton.innerHTML = "Generating recommendations...";
 
