@@ -114,21 +114,23 @@ export default function CatSwiperFM() {
 
 		if (swiped) {
 			if (offset.x > 0) {
-				// ✅ Right swipe = like
-				setList((prev) =>
-					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
-				);
-				addChatToStorage(cat.name);
-  				window.dispatchEvent(new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }));
+				// Right swipe = like
+setList((prev) => prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)));
 
-				next(1);
-			} else {
-				setList((prev) =>
-					prev.map((c, i) => (i === index ? { ...c, likedByUser: false } : c)),
-				);
-				// ❌ Left swipe = skip
-				next(-1);
-			}
+// enqueue in a session queue (so multiple likes are kept)
+const key = "catter_swipe_queue";
+const q = JSON.parse(sessionStorage.getItem(key) || "[]");
+q.push({ name: cat.name, ts: Date.now() });
+sessionStorage.setItem(key, JSON.stringify(q));
+
+// also notify any mounted Chats page immediately
+window.dispatchEvent(new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }));
+
+next(1);
+
+ // or use prevCat() if you want to move backward on left swipe
+				}
+
 		}
 	};
 
