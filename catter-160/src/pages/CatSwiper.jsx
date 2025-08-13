@@ -7,6 +7,7 @@ import { useFormContext } from "./FormContext";
 import { Card } from "@/components/ui/card";
 import fs from "fs/promises";
 import path from "path";
+import { boolean } from "zod";
 
 const STORAGE_KEY = "currCats";
 const STORAGE_VER_KEY = "currCats_version";
@@ -141,6 +142,12 @@ export default function CatSwiperFM() {
 	};
 
 	const cat = list2[index];
+	let pCatLiked = false;
+	if (index != 0) {
+		pCatLiked = list2[index - 1].likedByUser;
+	}
+	console.log(pCatLiked);
+
 	//console.log(cat);
 	if (!cat) return null;
 	const [dir, setDir] = useState(0); // -1 left, 1 right
@@ -160,6 +167,7 @@ export default function CatSwiperFM() {
 				setList((prev) =>
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
 				);
+				//list2[index - 1].likedByUser = true;
 
 				// enqueue in a session queue (so multiple likes are kept)
 				const key = "catter_swipe_queue";
@@ -223,7 +231,7 @@ export default function CatSwiperFM() {
 											<Heart className="w-6 h-6 text-red-500 fill-red-500" />
 										</button>
 									)}
-									{index > 0 && (
+									{index > 0 && pCatLiked == false && (
 										<button
 											onClick={prevCat}
 											className="absolute top-3 left-3 z-10 p-2 rounded-full bg-white shadow-lg hover:bg-gray-100"
@@ -269,6 +277,12 @@ export default function CatSwiperFM() {
 										</div>
 
 										<div className="mt-3 flex flex-wrap gap-2">
+											<PinkChip>
+												{" "}
+												{cat.energyLevel === "chill"
+													? "💤 Chill"
+													: "⚡ Energetic"}
+											</PinkChip>
 											<PinkChip>🐈 {cat.breed}</PinkChip>
 											<PinkChip>🎨 {cat.color}</PinkChip>
 											<PinkChip>⚖️ {cat.weight}</PinkChip>

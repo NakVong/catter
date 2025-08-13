@@ -99,6 +99,7 @@ export const FormProvider = ({ children }) => {
 			age: cat.age,
 			shortDescription: cat.shortDescription,
 			about: cat.about,
+			energyLevel: cat.energyLevel,
 		}));
 	}
 	const simplifiedCats = simplifyCats(cats);
@@ -135,8 +136,8 @@ export const FormProvider = ({ children }) => {
 				catInfo: {},
 			};
 
-			console.log(submission);
-			console.log(response);
+			//console.log(submission);
+			//console.log(response);
 
 			setSavedForms((prev) => {
 				const userForms = prev[username] || [];
