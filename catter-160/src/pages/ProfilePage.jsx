@@ -126,9 +126,15 @@ const ProfilePage = () => {
                 )}
 
                 <div className="relative inline-block">
-                    <div className="w-full aspect-[2955/3694] overflow-hidden shadow-md mx-auto">
-                        <img src={image || "/placeholder.jpg"} alt="Cat" className="w-full h-full object-cover" />
-                    </div>
+                    {image && image.trim() !== "" && (
+                        <div className="w-full aspect-[2955/3694] overflow-hidden shadow-md mx-auto">
+                            <img
+                            src={image}
+                            alt="Cat"
+                            className="w-full h-full object-cover"
+                            />
+                        </div>
+                    )}
                     {editMode && (
                         <input
                             type="file"
