@@ -155,6 +155,12 @@ export default function CatSwiperFM() {
 
 	const isFlipped = flippedIndex === index;
 
+	const [overlayEmoji, setOverlayEmoji] = useState(null);
+
+	const showEmoji = (emoji) => {
+		setOverlayEmoji(emoji);
+		setTimeout(() => setOverlayEmoji(null), 600); // hide after 0.6s
+	};
 	const handleDragEnd = (_e, info) => {
 		const { offset, velocity } = info;
 		const power = Math.abs(offset.x) * 0.5 + Math.abs(velocity.x);
@@ -163,29 +169,32 @@ export default function CatSwiperFM() {
 
 		if (swiped) {
 			if (offset.x > 0) {
+				// ❤️ Show heart
+				showEmoji("❤️");
+
 				// Right swipe = like
 				setList((prev) =>
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: true } : c)),
 				);
-				//list2[index - 1].likedByUser = true;
 
-				// enqueue in a session queue (so multiple likes are kept)
 				const key = "catter_swipe_queue";
 				const q = JSON.parse(sessionStorage.getItem(key) || "[]");
 				q.push({ name: cat.name, ts: Date.now() });
 				sessionStorage.setItem(key, JSON.stringify(q));
 
-				// also notify any mounted Chats page immediately
 				window.dispatchEvent(
 					new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }),
 				);
 
 				next(1);
 			} else {
+				// 😢 Show tears
+				showEmoji("😢");
+
+				// ❌ Left swipe = skip
 				setList((prev) =>
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: false } : c)),
 				);
-				// ❌ Left swipe = skip
 				next(-1);
 			}
 		}
@@ -384,6 +393,30 @@ export default function CatSwiperFM() {
 								</Card>
 							</div>
 						</div>
+						{overlayEmoji && (
+							<div
+								style={{
+									position: "fixed",
+									top: "50%",
+									left: "50%",
+									transform: "translate(-50%, -50%)",
+									fontSize: "100px",
+									pointerEvents: "none",
+									animation: "fadeOut 0.6s ease-out forwards",
+								}}
+							>
+								{overlayEmoji}
+							</div>
+						)}
+
+						<style>
+							{`
+  @keyframes fadeOut {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    to { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+  }
+`}
+						</style>
 					</motion.div>
 				</AnimatePresence>
 			</div>

@@ -2,9 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import { House, BookText, MessageSquare } from "lucide-react";
 
 const NavBar = () => {
-    const location = useLocation();
+	const location = useLocation();
 
-    const isActive = (path) => location.pathname === path;
+	const isActive = (path) => location.pathname === path;
 
     return (
         <div className="fixed bottom-0 left-0 w-full bg-white border-t flex justify-around items-center h-16">
