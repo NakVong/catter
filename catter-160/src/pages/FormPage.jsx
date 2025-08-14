@@ -27,6 +27,7 @@ const FormPage = () => {
 		setUsername(username);
 
 		localStorage.setItem("catIndex", 0);
+		localStorage.setItem("numChats", 0);
 		sessionStorage.removeItem("catter_session_chats_v1");
 
 		const submitButton = document.querySelector(".submit-button");

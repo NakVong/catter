@@ -83,6 +83,7 @@ const HealthCard = ({ status, label }) => {
 export default function CatSwiperFM() {
 	const username = localStorage.getItem("catter-username") || "";
 	const { formData, savedForms } = useFormContext();
+	const [count, setCount] = useState(0);
 
 	const userForms = username ? savedForms[username] || [] : [];
 	const latestUserInfo =
@@ -181,6 +182,10 @@ export default function CatSwiperFM() {
 				const q = JSON.parse(sessionStorage.getItem(key) || "[]");
 				q.push({ name: cat.name, ts: Date.now() });
 				sessionStorage.setItem(key, JSON.stringify(q));
+				localStorage.setItem(
+					"numChats",
+					Number(localStorage.getItem("numChats") || 0) + 1,
+				);
 
 				window.dispatchEvent(
 					new CustomEvent("catter:swipeRight", { detail: { name: cat.name } }),
