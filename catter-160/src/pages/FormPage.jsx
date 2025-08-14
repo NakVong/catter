@@ -94,12 +94,17 @@ const FormPage = () => {
 					</h1>
 				</div>
 
+				<div className="mt-4 space-y-2">
+					<p>Not all questions need to be answered.</p>
+					<p>However, it will lead to better recommendations</p>
+				</div>
+
 				{/* Content */}
 				<div className="flex-1 mt-4 overflow-y-auto space-y-3">
 					{sections.map((section) => (
 						<Card key={section.title} className="shadow-sm">
 							<CardContent className="p-0">
-								<div className="flex items-center gap-2 px-2 py-1.5 border-b bg-rose-100">
+								<div className="flex items-center gap-2 border-b bg-rose-100">
 									<h2 className="text-base font-bold flex-1">
 										{section.title}
 									</h2>
@@ -162,7 +167,7 @@ const FormPage = () => {
 						Submit Form
 					</Button>
 
-					{savedFormsForUser.length > 0 && (
+					{/* {savedFormsForUser.length > 0 && (
 						<>
 							<div className="text-xs text-center text-gray-600 bg-green-50 p-2 rounded">
 								✅ {savedFormsForUser.length} form
@@ -177,7 +182,7 @@ const FormPage = () => {
 								Clear All
 							</Button>
 						</>
-					)}
+					)} */}
 				</div>
 			</div>
 		</div>
