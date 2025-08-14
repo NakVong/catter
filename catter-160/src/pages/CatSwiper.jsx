@@ -188,9 +188,6 @@ export default function CatSwiperFM() {
 
 				next(1);
 			} else {
-				// 😢 Show tears
-				showEmoji("😢");
-
 				// ❌ Left swipe = skip
 				setList((prev) =>
 					prev.map((c, i) => (i === index ? { ...c, likedByUser: false } : c)),
