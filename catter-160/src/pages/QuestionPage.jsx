@@ -246,7 +246,7 @@ const QuestionPage = () => {
                 >
                   <span className="text-lg">{option.label}</span>
                   <div
-                    className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                    className={`w-6 h-6 ${question.multi ? "rounded" : "rounded-full"} border-2 flex items-center justify-center ${
                       selectedOptions.has(option.id)
                         ? "bg-purple-500 border-purple-500"
                         : "border-gray-300"

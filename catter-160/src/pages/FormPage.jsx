@@ -96,7 +96,7 @@ const FormPage = () => {
 
 				<div className="mt-4 space-y-2">
 					<p>Not all questions need to be answered.</p>
-					<p>However, it will lead to better recommendations</p>
+					<p>However, it will lead to better recommendations.</p>
 				</div>
 
 				{/* Content */}
