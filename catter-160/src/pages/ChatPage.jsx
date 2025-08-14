@@ -442,7 +442,7 @@ const ChatPage = () => {
                   {showActive ? <ChevronUp size={25} /> : <ChevronDown size={25} />}
                 </div>
                 {showActive && (
-                  <div className="mt-3 space-y-3 ml-20">
+                  <div className="mt-3 space-y-3 w-full">
                     {activeChats.map((c) => (
                       <ChatCard
                         key={c.id}
@@ -470,7 +470,7 @@ const ChatPage = () => {
                   {showAll ? <ChevronUp size={25} /> : <ChevronDown size={25} />}
                 </div>
                 {showAll && (
-                  <div className="mt-3 space-y-3 ml-20">
+                  <div className="mt-3 space-y-3 w-full">
                     {past.map((c) => (
                       <ChatCard
                         key={c.id}
