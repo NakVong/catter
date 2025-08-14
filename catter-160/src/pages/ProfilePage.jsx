@@ -117,6 +117,40 @@ const ProfilePage = () => {
 				</button>
 
 				{editMode ? (
+                    <input
+                        type="text"
+                        name="name"
+                        value={catDetails.name}
+                        onChange={handleChange}
+                        className="text-3xl font-bold mb-4 text-center border rounded px-2 py-1 w-full"
+                        placeholder="Name"
+                    />
+                ) : (
+                    <h1 className="text-3xl font-bold mb-4">{catDetails.name}</h1>
+                )}
+
+                <div className="relative inline-block">
+                    {image && image.trim() !== "" && (
+                        <div className="w-full aspect-[2955/3694] overflow-hidden shadow-md mx-auto">
+                            <img
+                            src={image}
+                            alt="Cat"
+                            className="w-full h-full object-cover"
+                            />
+                        </div>
+                    )}
+                    {editMode && (
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="mt-3 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pink-100 file:text-pink-700 hover:file:bg-pink-200"
+                        />
+                    )}
+                </div>
+>>>>>>> nak
+
+				{editMode ? (
 					<input
 						type="text"
 						name="name"

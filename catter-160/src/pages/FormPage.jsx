@@ -35,7 +35,7 @@ const FormPage = () => {
 
 		setTimeout(() => {
 			navigate("/main");
-		}, 3000);
+		}, 5000);
 	};
 
 	const handleClearAll = () => {
