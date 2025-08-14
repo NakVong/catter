@@ -148,7 +148,6 @@ const ProfilePage = () => {
                         />
                     )}
                 </div>
->>>>>>> nak
 
 				{editMode ? (
 					<input
