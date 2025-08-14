@@ -195,6 +195,7 @@ const QuestionPage = () => {
 
   const goPrev = () => {
     if (currentIndex > 0) {
+      handleSave();
       const prevQuestion = questionKeys[currentIndex - 1];
       navigate(`/question?ask=${prevQuestion}`);
     }
@@ -202,6 +203,7 @@ const QuestionPage = () => {
 
   const goNext = () => {
     if (currentIndex < questionKeys.length - 1) {
+      handleSave();
       const nextQuestion = questionKeys[currentIndex + 1];
       navigate(`/question?ask=${nextQuestion}`);
     }
@@ -211,7 +213,7 @@ const QuestionPage = () => {
     <div className="h-[850px] bg-pink-50 p-4">
       <div className="w-full max-w-md mx-auto">
         {/* Back Button */}
-        <Link
+        <Link onClick={handleSave}
           to="/form"
           className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 bg-white rounded-lg mb-6 hover:bg-gray-50"
         >
